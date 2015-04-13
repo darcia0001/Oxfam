@@ -1,8 +1,7 @@
-
 <?php
-    
-    // Connexion au service XE (i.e. la base de données) sur la machine "localhost"
-     $conn = oci_pconnect('darcia', 'passer', 'localhost/XE');
+    /*
+    // Connexion au service XE (i.e. la base de donnï¿½es) sur la machine "localhost"
+     $conn = oci_pconnect('oxfam', 'passer', 'localhost/XE');
     
     
     if (!$conn) {
@@ -23,10 +22,14 @@
         echo "</tr>\n";
     }
     echo "</table>\n";
+	 * 
+	 * */
     
 ?>
 
 <?php
+	//************************************************************************
+	// ****************** MANAGEUR UTILISATEUR *******************************
     require(dirname(__FILE__)."/../M_Utilisateur/Utilisateur.php");
     class ManageurUtilisateur{
         /**
@@ -141,7 +144,7 @@
                 return (bool) $this->getPDO()->query('SELECT COUNT(*) FROM utilisateurs WHERE id = '.$info)->fetchColumn();
             }
     
-            // Sinon, c'est qu'on veut vérifier en utilisant l email  .
+            // Sinon, c'est qu'on veut vï¿½rifier en utilisant l email  .
     
             $q = $this->getPDO()->prepare('SELECT COUNT(*) FROM utilisateurs WHERE email = :email');
             $q->execute(array(':email' => $info));
@@ -204,7 +207,246 @@
     
         }
     
-    }//fin class ManageurDb
+    }//fin class ManageurUtilisateur
+	
+	
+	// *******************************************************************************
+	// *************************** MANAGEUR OPERATIONS  ******************************
+	require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/OperationBanque.php');
+	require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/OperationCaisse.php');
+    class ManageurOperation{
+        /**
+         * Instance de la classe ManageurOperation:singleton
+         *
+         * @var ManageurOperation
+         * @access private
+         * @static
+         */
+        private static $instance = null;
+        /**
+        *  Instance de la classe PDO
+        *
+        * @var PDO
+        * @access private
+        */
+        private $PDOInstance = null;
     
-    //c
+        /**
+        * Constante: nom d'utilisateur de la bdd
+        *
+        * @var string
+        */
+        const DEFAULT_ORACLE_USER = 'oxfam';
+        /**
+        * Constante: hote de la bdd
+        *
+        * @var string
+        */
+        const DEFAULT_ORACLE_SERVICE = 'localhost/XE';
+        /**
+        * Constante: hÃ´te de la bdd
+        *
+        * @var string
+        */
+        const DEFAULT_ORACLE_PASS = 'passer';
+        /**
+        * Constante: nom de la bdd
+        *
+        * @var string
+        */
+        const DEFAULT_ORACLE_NS = 'oxfam';//bon bon oxfam lors de l integration
+        /**
+        * Constructeur private:singleton
+        *
+        * @param void
+        * @return void
+        * @see PDO::__construct()
+        * @access private
+        */
+        private function __construct(){
+            try{
+                $this->PDOInstance  = new PDO("oci:dbname=".self::DEFAULT_ORACLE_SERVICE,self::DEFAULT_ORACLE_USER,self::DEFAULT_ORACLE_PASS,array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
+		    }catch(PDOException $e){
+            	
+                echo ($e->getMessage());
+            }
+    
+         }
+        /**
+        * Cree et retourne l'objet ManageurOperation : Singleton
+        *
+        * @access public
+        * @static
+        * @param void
+        * @return ManageurOperation $instance
+        */
+        public static function getInstance(){
+            if(is_null(self::$instance)){
+            	self::$instance = new ManageurOperation();
+            }
+            return self::$instance;
+        }
+        public function getPDO(){
+            $this->PDOInstance  = new PDO("oci:dbname=".self::DEFAULT_ORACLE_SERVICE,self::DEFAULT_ORACLE_USER,self::DEFAULT_ORACLE_PASS,array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
+            return $this->PDOInstance ;
+        }
+        /*methodes de manipulation des operations */
+    
+         public function addOperationBanque(OperationBanque $opBanque){
+            $q = $this->getPDO()->prepare('INSERT INTO operationBanque SET libelle = :libelle, dateOperation = :dateOperation, sommeOperation = :sommeOperation,  noteOperation = :noteOperation, etatSoumission = :etatSoumission, soumission = :soumission, referencePaiement = :referencePaiement , typeOpBancaire = :typeOpBancaire');
+            $q->bindValue(':libelle', $opBanque->getLibelle());
+            $q->bindValue(':dateOperation', $opBanque->getDateOperation()); 
+            $q->bindValue(':sommeOperation', $opBanque->getSommeOperation());
+            $q->bindValue(':noteOperation', $opBanque->getNoteOperation());
+            $q->bindValue(':etatSoumission', $opBanque->getEtatSoumission());
+			$q->bindValue(':soumission', $opBanque->getSoumission());
+			$q->bindValue(':referencePaiement', $opBanque->getReferencePaiement());
+			$q->bindValue(':typeOpBancaire', $opBanque->getTypeOpBancaire());
+			//$q->bindValue(':ligneBudget', $opBanque->getLigneBudget);
+            try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
+            //on informe l'objet de son id dans la base
+            // $opBanque->hydrate(array(
+                    // 'id' => $this->getPDO()->lastInsertId()
+            // ));
+        }
+		public function addOperationCaisse(OperationCaisse $opCaisse){
+			$q = $this->getPDO()->prepare('select ref(l) from lignebudget l where (l.libelle=\'bugget1\')');
+            try {
+            	$opCaisse->setLigneBudget($q->execute()->fetchColumn());
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
+            $q = $this->getPDO()->prepare('INSERT INTO operationCaisse values (seq_opCaisse.NEXTVAL, :libelle, :dateOperation, :sommeOperation, :noteOperation, :etatSoumission, :soumission, :referencePaiement, :ligneBudget, :numRecu)');
+            $q->bindParam (':libelle', $opCaisse->getLibelle());
+            $q->bindParam(':dateOperation', date_format(date_create($opCaisse->getDateOperation()), 'd-m-Y')); 
+            $q->bindParam(':sommeOperation', $opCaisse->getSommeOperation());
+            $q->bindParam(':noteOperation', $opCaisse->getNoteOperation());
+            $q->bindParam(':etatSoumission', $opCaisse->getEtatSoumission());
+			$q->bindParam(':soumission', $opCaisse->getSoumission());
+			$q->bindParam(':referencePaiement', $opCaisse->getReferencePaiement());
+			$q->bindParam(':ligneBudget', $opCaisse->getLigneBudget());
+			$q->bindParam(':numRecu', $opCaisse->getNumRecu());
+			
+			try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
+            
+        }
+        public function countOperationBanque(){
+            $q = $this->getPDO()->prepare('SELECT COUNT(*)  FROM operationBanque ');
+            try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
+            return $q->fetchColumn();
+        }
+		public function countOperationCaisse(){
+            $q = $this->getPDO()->prepare('SELECT COUNT(*)  FROM operationCaisse ');
+            try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
+            return $q->fetchColumn();
+        } 
+		
+        public function deleteOperationBanque($idOpBanque){
+            $this->getPDO()->exec('DELETE FROM OperationBanque WHERE id = '.$idOpBanque);
+        }
+		public function deleteOperationCaisse($idOpCaisse){
+            $this->getPDO()->exec('DELETE FROM OperationCaisse WHERE id = '.$idOpCaisse);
+        }
+		
+        public function getOperationBanque($id){
+            $opBanque=array();
+            if (is_int($info)){
+              $q = $this->getPDO()->query('SELECT * FROM OperationBanque WHERE id = '.$id);
+              $opBanque = $q->fetch(PDO::FETCH_ASSOC);
+            }
+        }
+		public function getOperationCaisse($id){
+            $opCaisse=array();
+            if (is_int($info)){
+              $q = $this->getPDO()->query('SELECT * FROM OperationCaisse WHERE id = '.$id);
+              $opCaisse = $q->fetch(PDO::FETCH_ASSOC);
+            }
+        }
+    	
+		  public function getListOperationBanque(){
+	        $opBanque = array();
+	        $q = $this->getPDO()->prepare('SELECT * FROM OperationBanque ');
+	        try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
+	        $tas=$q->fetchAll(PDO::FETCH_ASSOC);
+	         foreach ( $tas  as $donnees){
+	
+	         $opBanque[] = new OperationBanque($donnees); 
+	        }
+	        $q->closeCursor();
+	        unset($q);unset($tas);		
+	        return $opBanque;
+      	 }
+		  
+	     public function getListOperationCaisse(){
+	        $opCaisse = array();
+	        $q = $this->getPDO()->prepare('SELECT * FROM OperationCaisse ');
+	        try {
+            	$q->execute();
+				$tas=$q->fetchAll(PDO::FETCH_ASSOC);
+				var_dump($tas);
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
+			
+	         foreach ( $tas  as $donnees){
+	         	$opCaisse[] = new OperationCaisse($donnees); 
+				 var_dump($opCaisse);
+	         }
+	        $q->closeCursor();
+	        unset($q);unset($tas);
+			var_dump($opCaisse);
+	        return $opCaisse;
+      	}
+		 
+		 
+        public function updateOperationBanque(OperationBanque $opBanque){
+            $q = $this->getPDO()->prepare('UPDATE operationBanque SET libelle = :libelle, dateOperation = :dateOperation, sommeOperation = :sommeOperation,  noteOperation = :noteOperation, etatSoumission = :etatSoumission, soumission = :soumission, referencePaiement = :referencePaiement , typeOpBancaire = :typeOpBancaire WHERE id = :id');
+            $q->bindValue(':libelle', $opBanque->getLibelle());
+            $q->bindValue(':dateOperation', $opBanque->getDateOperation()); 
+            $q->bindValue(':sommeOperation', $opBanque->getSommeOperation());
+            $q->bindValue(':noteOperation', $opBanque->getNoteOperation());
+            $q->bindValue(':etatSoumission', $opBanque->getEtatSoumission());
+			$q->bindValue(':soumission', $opBanque->getSoumission());
+			$q->bindValue(':referencePaiement', $opBanque->getReferencePaiement());
+			$q->bindValue(':typeOpBancaire', $opBanque->getTypeOpBancaire());
+            $q->bindValue(':id', $opBanque->getId());
+            $q->execute();
+            $q->closeCursor();
+        }
+		
+		public function updateOperationCaisse(OperationCaisse $opCaisse){
+            $q = $this->getPDO()->prepare('UPDATE operationCaisse SET libelle = :libelle, dateOperation = :dateOperation, sommeOperation = :sommeOperation,  noteOperation = :noteOperation, etatSoumission = :etatSoumission, soumission = :soumission, numRecu = :numRecu WHERE id = :id');
+            $q->bindValue(':libelle', $opCaisse->getLibelle());
+            $q->bindValue(':dateOperation', $opCaisse->getDateOperation()); 
+            $q->bindValue(':sommeOperation', $opCaisse->getSommeOperation());
+            $q->bindValue(':noteOperation', $opCaisse->getNoteOperation());
+            $q->bindValue(':etatSoumission', $opCaisse->getEtatSoumission());
+			$q->bindValue(':soumission', $opCaisse->getSoumission());
+			$q->bindValue(':numRecu', $opCaisse->getNumRecu());
+            $q->bindValue(':id', $opCaisse->getId());
+            $q->execute();
+            $q->closeCursor();
+        }
+    
+    }//fin class ManageurOperation
 ?>
