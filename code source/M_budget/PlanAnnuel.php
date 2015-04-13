@@ -27,7 +27,7 @@ class PlanAnnuel {
 	/**
 	 * @AssociationType M_Budget.AnneeComptable
 	 */
-	public $_;
+	public $_anneeComptable;
 	/**
 	 * @AssociationType M_Budget.PlanMensuel
 	 * @AssociationKind Composition
@@ -39,6 +39,26 @@ class PlanAnnuel {
 		$this->$code = $code;
 		$this->$montamtTotalPrevu = $montamtTotalPrevu;
 		$this->$unnamed_PlanMensuel_ = new PlanMensuel($code, $libelle);
+	}
+	public function setLibelle($libelle){
+		$this->$libelle = $libelle;
+	}
+	public function getLibelle(){
+		return $this->$libelle;
+	}
+
+	public function setCode($code){
+		$this->$code = $code;
+	}
+	public function getCode(){
+		return $this->$code;
+	}
+
+	public function setMontamtTotalPrevu($montamtTotalPrevu){
+		$this->$montamtTotalPrevu = $montamtTotalPrevu;
+	}
+	public function getMontamtTotalPrevu(){
+		return $this->$montamtTotalPrevu;
 	}
 }
 ?>
