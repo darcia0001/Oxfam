@@ -1,7 +1,7 @@
 <?php
 require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD.php');
-require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
-require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
+require_once(realpath(dirname(__FILE__)) . '/../Classes/M_SuiviCaisse/OperationBanque.php');
+require_once(realpath(dirname(__FILE__)) . '/../Classes/M_SuiviCaisse/OperationCaisse.php');
 $manageur=ManageurOperation::getInstance();
 $listeOpCaisse = $manageur->getListOperationCaisse();
 //var_dump($listeOpCaisse);

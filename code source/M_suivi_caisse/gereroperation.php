@@ -111,6 +111,7 @@
 									                            <th style="width:15%;overflow:auto">Somme </th>
 									                            <th style="width:10%;overflow:auto">Note </th>
 																<th style="width:10%;overflow:auto">Num Recu</th>
+																<th style="width:10%;overflow:auto">Types</th>
 									                            <th>Actions</th>
 									                        </tr>
 									                    </thead>
@@ -120,9 +121,13 @@
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
-															$listeOpCaisse = $manageur->getListOperationCaisse();
-															$opCaisse = new OperationCaisse(array());	
-																//echo var_dump($lesutilisateurs);
+															$idLigneBudget = 1 ; // L'id de la ligne budgéetaire
+															$listeOpCaisse = $manageur->getListOperationCaisse($idLigneBudget);
+															$listeOpBanque = $manageur->getListOperationBanque($idLigneBudget);
+															$opCaisse = new OperationCaisse(array());
+															$opBanque = new OperationBanque(array());	
+															
+															// Listing des opération Caisse
 																foreach ($listeOpCaisse as $opCaisse){
 																 ?>	
 																  
@@ -131,6 +136,41 @@
 									                            <td><?php  echo $opCaisse->getSommeOperation() ?>	</td>
 									                            <td><?php  echo $opCaisse->getNoteOperation() ?>	</td>
 									                            <td><?php  echo $opCaisse->getNumRecu()  ?>	</td>
+									                            <td> Caisse </td>
+									                        
+									                            <td>
+																<center>
+																		<a href="#" title="Afficher" id="<?php  echo $opCaisse->getID()  ?> " 
+									                            				onclick="showOperation(this.id);"  
+									                            				type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#showOperation">
+									                            				<i class="fa fa-eye"></i>
+									                            		</a>
+									                            		<a href="#" title="Modifier" id="<?php  echo $opCaisse->getId()  ?>" 
+									                            				onclick="modifyOperation(this.id);"  
+									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyOperation">
+									                            				<i class="fa fa-edit"></i>
+									                            		</a>
+									                            		<a href="#"  title="Supprimer"id=" <?php  echo $opCaisse->getId()  ?> " 
+									                                    		onclick="deleteOperation(this.id);"
+									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delOperation">
+									                                    		 <i class="fa fa-times"></i>
+									                            		 </a>
+									                       		</center>
+									                       </td>
+									                        </tr>
+																 
+														   <?php 
+																}										                       
+									                       // Listing des opération Banque
+																foreach ($listeOpBanque as $opBanque){
+																 ?>	
+																  
+									                            <td><?php  echo $opBanque->getLibelle() ?>	</td>
+									                            <td><?php  echo $opBanque->getDateOperation() ?>	</td>
+									                            <td><?php  echo $opBanque->getSommeOperation() ?>	</td>
+									                            <td><?php  echo $opBanque->getNoteOperation() ?>	</td>
+									                            <td><?php  echo "--"  ?>	</td>
+									                            <td> Banque </td>
 									                        
 									                            <td>
 																<center>
@@ -191,7 +231,8 @@
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
-															$listeOpCaisse = $manageur->getListOperationCaisse();
+															$idLigneBudget = 2 ; // L'id de la ligne budgéetaire
+															$listeOpCaisse = $manageur->getListOperationCaisse($idLigneBudget);
 															$opCaisse = new OperationCaisse(array());	
 																//echo var_dump($lesutilisateurs);
 																foreach ($listeOpCaisse as $opCaisse){
@@ -262,7 +303,8 @@
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
-															$listeOpCaisse = $manageur->getListOperationCaisse();
+															$idLigneBudget = 3 ;
+															$listeOpCaisse = $manageur->getListOperationCaisse($idLigneBudget);
 															$opCaisse = new OperationCaisse(array());	
 																//echo var_dump($lesutilisateurs);
 																foreach ($listeOpCaisse as $opCaisse){
