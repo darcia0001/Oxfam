@@ -1,7 +1,7 @@
 <?php
 
 	//chargeons la classes de la base des donnees
- 	require('../Manageur/Manageur2.php');
+ 	require('../Manageur/ManageurBudget.php');
 
 	$bdd = Manageur2::getInstance();
  //on teste d'abord si tous les champs ont ete saisis
