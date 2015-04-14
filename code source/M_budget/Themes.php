@@ -31,14 +31,6 @@ class Themes {
 		return $this->$libelle;
 	}
 	
-	public function setActiviteB(ActiviteB $actB){
-		$this->$unnamed_ActiviteB_ = $actB;
-	}
-
-	public function getActiviteB(){
-		return $this->$unnamed_ActiviteB_;
-	}
-
 	//constructeur
 	public function __construct($libelle){
 		$this-> $libelle = $libelle;
