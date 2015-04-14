@@ -53,7 +53,7 @@ class Mois {
 	public function setEtat($etat){
 		$this->$etat = $etat;
 	}
-	public function getLibelle(){
+	public function getEtat(){
 		return $this->$etat;
 	}
 }

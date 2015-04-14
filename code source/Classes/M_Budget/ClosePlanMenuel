@@ -1,7 +1,0 @@
-//Pour fermer un plan mensuel il suffit tout juste de mettre son etat à "fermer" 
-	//RMQ = Un plan mensuel ouvert a un état "ouvert"
-	//Je pense    qu'on doit l'ajouter dans la classe Manager mais pour ne pas 
-	//mélanger les choses je le fais ici 
-	public function closePlanMensuel(PlanMensuel toClose){
-		toClose.setEtat("fermer");
-	}
