@@ -138,22 +138,22 @@
                 vmdp = document.getElementById("vmdp").value;
                 if ( mdp!=""){
                     if ( mdp.length>=5){
-                            document.getElementById("modifUserBtn").disabled=false;
-                            document.getElementById("notification").className="alert-info alert-dismissable";
-                            document.getElementById("notification").innerHTML="Le mot de passe est OK. ";
+                            document.getElementById("saveUserBtn").disabled=false;
+                            document.getElementById("notification").className="alert-info alert-dismissable ";
+                            document.getElementById("notification").innerHTML="<span id='lb_pwdOK'>Le mot de passe est OK.</span>";
                             if (mdp==vmdp){
-                                    document.getElementById("modifUserBtn").disabled=false;
+                                    document.getElementById("saveUserBtn").disabled=false;
                                     document.getElementById("notification").className="alert-info alert-dismissable";
-                                    document.getElementById("notification").innerHTML="Les mots de passe correspondent maintenant. ";
+                                    document.getElementById("notification").innerHTML="<span id='lb_pwdMatch'>Les mots de passe correspondent maintenant.</span>";
                                 }else{
-                                    document.getElementById("modifUserBtn").disabled=true;
+                                    document.getElementById("saveUserBtn").disabled=true;
                                     document.getElementById("notification").className="alert-danger alert-dismissable";
-                                    document.getElementById("notification").innerHTML="Les mots de passe ne correspondent pas ! Vérifiez encore.";
+                                    document.getElementById("notification").innerHTML="<span id='lb_pwdDiff'>Les mots de passe ne correspondent pas ! Vérifiez encore.</span>";
                                 }
                         }else{
-                            document.getElementById("modifUserBtn").disabled=true;
+                            document.getElementById("saveUserBtn").disabled=true;
                             document.getElementById("notification").className="alert-danger alert-dismissable";
-                            document.getElementById("notification").innerHTML="Le mot de passe est trop court. Il doit être supérieur ou égal à 5 caractères";
+                            document.getElementById("notification").innerHTML="<span id='lb_shortPwd'>Le mot de passe est trop court. Il doit être supérieur ou égal à 5 caractéres.</span>";
                     }
                 }
             }
@@ -210,12 +210,12 @@
                     <!-- /.col-lg-12 -->
                 </div>
                 <span class="col_12">
-                        <select id="lang">
-                            <option value="browser">-- Choix langue --</option>
-                            <option value="fr">Français</option>
-                            <option value="en">English</option>
-                        </select>
-                    </span>
+                    <select id="lang">
+                        <option value="browser">-- Choix langue --</option>
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                    </select>
+                </span>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <font color="cyan">  <i class="fa fa-edit"></i> </font>
