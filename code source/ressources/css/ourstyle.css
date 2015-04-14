@@ -1,0 +1,37 @@
+body{
+	font-size: 14px;
+}
+
+h1{
+	color: green;
+}
+.my_header{
+	background-color: rgb(137, 196, 0);
+}
+ul {
+	list-style-type: none;
+}
+
+aside ul {
+	font-size: 14px;
+	text-align: center;
+	padding : 5 5;
+}
+
+aside ul li{
+	padding : 5 5;
+}
+	
+.top_menu{
+	background-color: rgb(137, 196, 0);
+	border-radius: 12 12 0 0;
+}
+
+i.fa-home{
+	font-size: 20px;
+	letter-spacing: 2px;
+}
+
+.listeProjet h1{
+	text-align: center;
+}

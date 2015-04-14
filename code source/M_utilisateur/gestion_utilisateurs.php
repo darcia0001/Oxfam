@@ -1,24 +1,26 @@
 <?php
 require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php');
 $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de donneeq
-  // ---------------------------- gestion de la securité -------------------------
+// ---------------------------- gestion de la securité -------------------------
     session_start();
-  if (!isset($_SESSION['user'])){
+  if (!isset($_SESSION['utilisateur'])){
   
-    header('Location:  connexion.php');
-    exit();
+    header('Location:  connexion.php');exit();
   }
     //redirection suivant le profil de l utilisateur
     if (isset($_SESSION['utilisateur'])){
 	 $user =  unserialize($_SESSION['utilisateur']);
-	   if (($user->getProfil())=='agenprojet'){//si c est un agent projet on le redirige
-	   	header("Location: ..");exit();
+	   if (($user->getProfil())=='agentprojet'){//si c est un agent projet on le redirige
+	   	header("Location: ../accueil.php");exit();
+	   	 
 	   }
-	   if (($user->getProfil())=='agenprojet'){//si c est un agent oxfam on le redirige
-	   	header("Location: ..");exit();
+	   if (($user->getProfil()=='agentoxfam')&&($user->getGroupeUtilisateur()!="administrateur")){//si c est un agent oxfam non administrateur on le redirige
+	   		header("Location: ../accueil.php");exit();
+	   		 
 	   }
   }
 // --------------------------------------------------------------------------------
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -37,6 +39,46 @@ $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de 
     	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     	<!-- Bootstrap Core JavaScript -->
     <script src="../assets/js/bootstrap.min.js"></script>
+    <script>
+    
+     $(document).ready(function() {   
+    	//alert("charger");
+//     	$('#modifUser').change(
+//         		function() {        			
+//         	            var val = $('#selectProfil option:selected').val();
+//         	            if (val == "agentoxfam") {
+        	                
+//         	                $(".selectGroupeOxfam").show();
+//         	                $(".selectGroupeProjet").hide();
+//         	            }
+//         	            if (val == "agentprojet") {
+        	            	
+//         	                $(".selectGroupeOxfam").hide();
+//         	                $(".selectGroupeProjet").show();
+//         	            }
+//         		});
+    $(function () {
+        //alert("");
+        $(".selectGroupeOxfam").hide();
+        $(".selectGroupeProjet").show();
+        $("#selectProfil").change(function () {
+//         	alert("change profil");
+            var val = $('#selectProfil option:selected').val();
+            if (val == "agentoxfam") {
+                
+                $(".selectGroupeOxfam").show();
+                $(".selectGroupeProjet").hide();
+            }
+            if (val == "agentprojet") {
+            	
+                $(".selectGroupeOxfam").hide();
+                $(".selectGroupeProjet").show();
+            }
+            
+        })
+    })
+    } );//document ready
+    </script>
 		
 <script>
 var emailsUtilisateursChecked=new Array();
@@ -105,6 +147,23 @@ function modifyUser() {
 	  }
 	 xmlhttp.open("GET","addUtilisateur.php?ajouter=1&email="+email,true);
 	  xmlhttp.send();
+	  $(".selectGroupeOxfam").hide();
+      $(".selectGroupeProjet").show();
+	  $("#selectProfil").change(function () {
+//       	alert("change profil");
+          var val = $('#selectProfil option:selected').val();
+          if (val == "agentoxfam") {
+              
+              $(".selectGroupeOxfam").show();
+              $(".selectGroupeProjet").hide();
+          }
+          if (val == "agentprojet") {
+          	
+              $(".selectGroupeOxfam").hide();
+              $(".selectGroupeProjet").show();
+          }
+          
+      })
 	}
 	function deleteUser() {
 		if(emailsUtilisateursChecked.length>1 || emailsUtilisateursChecked.length<1){
@@ -241,8 +300,8 @@ function modifyUser() {
                                             <th width="20%">Prenom </th>
 											<th width="10%">Nom </th>
 											<th width="20%">Email </th>
-											<th width="10%">Profil </th>
-											<th width="20%"> Structure </th>
+											<th width="20%">Profil </th>
+											<th width="10%"> Structure </th>
 											 <th width="20%"> Groupe </th>
                                           
                                         </tr>
@@ -349,4 +408,5 @@ function modifyUser() {
             });
     } );
     </script>
+
 </html>

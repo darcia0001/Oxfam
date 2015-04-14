@@ -9,13 +9,13 @@ $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de 
     exit();
   }
     //redirection suivant le profil de l utilisateur
-    if (isset($_SESSION['user'])){
-	 $user =  unserialize($_SESSION['user']);
+    if (isset($_SESSION['utilisateur'])){
+	 $user =  unserialize($_SESSION['utilisateur']);
 	   if (($user->getProfil())=='agenprojet'){//si c est un agent projet on le redirige
 	   	header("Location: ../accueil.php");exit();
 	   }
-	   if (($user->getProfil())=='agenprojet'){//si c est un agent oxfam on le redirige
-	   	header("Location: ../accueil.php");exit();
+	   if (($user->getProfil()=='agentoxfam')&&($user->getGroupeUtilisateur()!="administrateur")){//si c est un agent oxfam non administrateur on le redirige
+	   		header("Location: ../accueil.php");exit();
 	   }
   }
 // --------------------------------------------------------------------------------
@@ -33,8 +33,12 @@ if( isset($_REQUEST["modification"])){//deuxieme entree sur la page execution de
 		}
 		if(isset($_REQUEST["password"] )){
 			$mdp=$_REQUEST["password"];
-	
-		$_user->setPassword(sha1($mdp));	 
+		if($mdp==$_user->getPassword()){
+			$_user->setPassword($mdp);
+		}else{//nouveau mdp
+			$_user->setPassword(sha1($mdp));
+		}
+			 
 		}
 		if(isset($_REQUEST["profil"] )){
 			$_user->setProfil($_REQUEST["profil"]);
@@ -67,7 +71,11 @@ if( isset($_REQUEST["ajout"])){//pour ajouter
 	}
 	if(isset($_REQUEST["password"] )){
 		$mdp=$_REQUEST["password"];
-		$_user->setPassword(sha1($mdp));
+		if($mdp==$_user->getPassword()){
+			$_user->setPassword($mdp);
+		}else{//nouveau mdp
+			$_user->setPassword(sha1($mdp));
+		}
 	}
 	if(isset($_REQUEST["profil"] )){
 		$_user->setProfil($_REQUEST["profil"]);
@@ -102,12 +110,21 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Projet Oxfam">
    <meta name="author" content="darcia0001">
+   <!-- Bootstrap Core CSS -->
+    	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+<script type="text/javascript" src="../assets/js/jquery.js"></script>
+    	<!-- Bootstrap Core JavaScript -->
+    <script src="../assets/js/bootstrap.min.js"></script>
     <script>
     $(document).ready(function() {   
-    	
+    	alert("charger");
     $(function () {
+        //alert("");
+        $(".selectGroupeOxfam").hide();
+        $(".selectGroupeProjet").show();
         $("#selectProfil").change(function () {
-             
+//         	alert("change profil");
             var val = $('#selectProfil option:selected').val();
             if (val == "agentoxfam") {
                 
@@ -193,6 +210,12 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
 									$profil3="";
 									if  ($_user->getProfil()=='agentProjet') 
 										$profil2="selected='selected' ";
+									//le choix d une structure
+									$lesStructure=$manageur->getListStructure();
+									$selectStruct='';
+									foreach ($lesStructure as $struct){
+										$selectStruct.='<option value="'.$struct->getNom().'"   >'.$struct->getNom().'</option>';
+									}
 	                        	echo '
 		                        	 <hr/>
 		                            <form role="form" action="addUtilisateur.php?modification=1" method="post">
@@ -214,11 +237,34 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
 						                                        </div>
 						                                        <div class="form-group">
 						                                            <label> Profil</label>
-						                                            <select name="profil" class="form-control" required="" >
+						                                            <select id="selectProfil" name="profil" class="form-control" required="" >
 																		<option value="agentoxfam" '.$profil1.'  >Agent oxfam</option>
 																		<option value="agentprojet"   '.$profil2.' >Agent projet</option>
 																		</select>
 						                                        </div>
+																		<div class="form-group">
+								                                            <label> Structure</label>
+								                                            <select name="structure" class="form-control" required="" >
+																				'.$selectStruct.'
+																				</select>
+								                                        </div>
+                    													
+								                                            
+																				
+																					<div class="form-group">
+								                                            		<label> Groupes d\'utilisateurs Agent Projet</label>
+																					<select name="groupe" class="form-control" required="" >
+												                   					<option class="selectGroupeProjet" value="gestionnaireprojet">Gestionnaire Projet</option>
+												                   					<option class="selectGroupeProjet" value="operateurprojet">Operateur Projet</option>
+												                   					<option class="selectGroupeOxfam" value="administrateur">Administrateur</option>
+												                   					<option class="selectGroupeOxfam" value="agentcontroleoxfam">Agent Controle</option>
+												                   					<option class="selectGroupeOxfam" value="agentvalidationoxfam">Agent Validation</option>
+											                   						</select>
+																					</div>
+																				
+			
+																			
+								                                        
 						                                        <div class="form-group">
 						                                            <label> Email </label>
 						                                            <input name="email" required=""   type="email" class="form-control" placeholder="Entrer l\'adresse email" value="'.$_user->getEmail().'">
@@ -251,14 +297,7 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
                         					 	foreach ($lesStructure as $struct){
 													$selectStruct.='<option value="'.$struct->getNom().'"   >'.$struct->getNom().'</option>';                        	
                         					 	}
-                        					 	//le choix d un groupe d utilisateur
-                        					 	$lesgroupes=$manageur->getListGroupe();
-                        					 	$selectGroupe='';
-                        					 	foreach ($lesgroupes as $groupe){
-                        					 		$selectGroupe.='<option value="'.$groupe->getNom().'"   >'.$groupe->getNom().'</option>';
-                        					 	}
                         					 	
-                        					 	echo  var_dump($selectStruct);
 			                                echo '
 			                        	 	<hr/>
 				                            <form role="form" action="addUtilisateur.php?ajout=1" method="post">
@@ -290,21 +329,18 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
 																				'.$selectStruct.'
 																				</select>
 								                                        </div>
-                    													<div class="form-group">
-								                                            <label> Groupes d\'utilisateurs</label>
-								                                            <select name="groupe" class="form-control" required="" >
-																				<div id="selectGroupeProjet">
+                    													
+																					<div class="form-group">
+								                                            		<label> Groupes d\'utilisateurs Agent Projet</label>
+																					<select name="groupe" class="form-control" required="" >
 												                   					<option class="selectGroupeProjet" value="gestionnaireprojet">Gestionnaire Projet</option>
 												                   					<option class="selectGroupeProjet" value="operateurprojet">Operateur Projet</option>
-												                   					<option class="selectGroupeProjet" value="gestionnaireprojet">Gestionnaire Projet</option>
-											                   					</div>
-											                   					<div id="selectGroupeOxfam">
 												                   					<option class="selectGroupeOxfam" value="administrateur">Administrateur</option>
 												                   					<option class="selectGroupeOxfam" value="agentcontroleoxfam">Agent Controle</option>
 												                   					<option class="selectGroupeOxfam" value="agentvalidationoxfam">Agent Validation</option>
-											                   					</div>
-																			</select>
-								                                        </div>
+											                   						</select>
+																					</div>
+																		
                                        
                          
 								                                        <div class="form-group">
@@ -324,8 +360,7 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
 								                                 <div class="form-group" id="divBtn" onmouseover="controle()">
 						                                        <button  id="modifUserBtn"  type="submit" class="btn btn-lg btn-success" ><i class="fa fa-check"></i> Ajouter </button>
 						                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                		  										<button type="button" class="btn btn-info"   onclick="confirmActive(this.id)"><i class="glyphicon glyphicon-ok"></i> Activer</button>
-							          							</div>
+                		  										</div>
 									                         </form>
 									                    </div>
 							                            </div>
@@ -385,9 +420,6 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
       </footer>
       
       
-<script type="text/javascript" src="../assets/js/jquery.js"></script>
-    	<!-- Bootstrap Core JavaScript -->
-    <script src="../assets/js/bootstrap.min.js"></script>
 
   
 

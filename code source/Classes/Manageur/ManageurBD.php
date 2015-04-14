@@ -82,34 +82,35 @@ class ManageurUtilisateur{
 	}
 	/*methodes de manipulation des utilisateurs */
 
-	 public function addUtilisateur(Utilisateur $uti){
-		$q = $this->getPDO()->prepare("insert into utilisateurs values ('nom','prenom','email','mdp','profil',
-(select REF(a) from GROUPES_UTILISATEUR a where a.nom='administrateur'),
-(select REF(a) from STRUCTURES a where a.nom='oxfam' ))");
-// 		$q->bindValue(':nom', $uti->getNom());
-// 		$q->bindValue(':prenom', $uti->getPrenom()); 
-// 		$q->bindValue(':email', $uti->getEmail());
-// 		$q->bindValue(':profil', $uti->getProfil());
-// 		$q->bindValue(':password', $uti->getPassword());
+	public function addUtilisateur(Utilisateur $uti){
+	 	echo var_dump($uti);
+		$q = $this->getPDO()->prepare("insert into utilisateurs values (:nom , :prenom , :email , :password , :profil ,
+	(select REF(a) from GROUPES_UTILISATEUR a where a.nom= :profil ),
+	(select REF(a) from STRUCTURES a where a.nom= :structure  ))");
+		$q->bindValue(':nom', $uti->getNom());
+		$q->bindValue(':prenom', $uti->getPrenom()); 
+		$q->bindValue(':email', $uti->getEmail());
+		$q->bindValue(':profil', $uti->getProfil());
+		$q->bindValue(':password', $uti->getPassword());
+		$q->bindValue(':structure', $uti->getStructure());
 		$q->execute();
 		//on infor l objet de son id dans la base
 		
 	}
-	 public function countUtilisateur($options){
+	public function countUtilisateur($options){
 		$utilisateurs = array();
 		$q = $this->getPDO()->prepare('SELECT COUNT(*)  FROM utilisateurs ');
 		$q->execute();
 		return $q->fetchColumn();
 	 
 	}
-	public function deleteUtilisateur(Utilisateur $uti){
-		$this->getPDO()->exec('DELETE FROM utilisateurs WHERE id = '.$uti->geId());
-	}
+	
 	//regarde
-	public function deleteUtilisateurByEmail($id){
-		
+	public function deleteUtilisateurByEmail($email){
+		$this->getPDO()->exec("DELETE FROM utilisateurs WHERE email = '".$email."'");
 		
 	}
+	
 	public function existUtilisateur($info){//pertinance
 		if (is_int($info)) // si l argument est un int On veut voir si tel utilisateur ayant pour id $info existe.
 		{
@@ -127,16 +128,13 @@ class ManageurUtilisateur{
 	///recoit en parametre soit l id soit l' email et retour l utilisateur correspondant
 	public function getUtilisateur($info){
 		$uti=array();
-		if (is_int($info)){//si c est l id
-		  $q = $this->getPDO()->query('SELECT * FROM utilisateurs WHERE id = '.$info);
-		  $uti = $q->fetch(PDO::FETCH_ASSOC);
-		}
-		else{//a partir d l email
-		  $q = $this->getPDO()->prepare('SELECT email,password,nom,prenom FROM utilisateurs WHERE email = :email');
+		//a partir d l email
+		  $q = $this->getPDO()->prepare('SELECT a.nom,a.prenom,a.email,a.profil,a.password,
+				a.STRUCTURE.nom as structure,a.GROUPE_UTILISATEUR.nom as groupeUtilisateur FROM utilisateurs a WHERE a.email = :email');
 		  $q->execute(array(':email' => $info));
 		  
 		  $uti = $q->fetch(PDO::FETCH_ASSOC);
-		}
+		
 		$q->closeCursor();
 		if($uti==null) return null;
 		 return new Utilisateur($uti);
@@ -147,7 +145,7 @@ class ManageurUtilisateur{
 	 public function getListUtilisateur(){
 	 	//echo var_dump( $options);
 		$utilisateurs = array();
-		$q = $this->getPDO()->prepare('SELECT a.nom,a.prenom,a.email,profil,
+		$q = $this->getPDO()->prepare('SELECT a.nom,a.prenom,a.email,a.profil,
 				a.STRUCTURE.nom as structure,a.GROUPE_UTILISATEUR.nom as groupeUtilisateur FROM utilisateurs a');
 		$q->execute();
 		$tas=$q->fetchAll(PDO::FETCH_ASSOC);
@@ -168,12 +166,18 @@ class ManageurUtilisateur{
   
   }
 	public function update(Utilisateur $uti){
-		$q = $this->getPDO()->prepare('UPDATE utilisateurs SET nom = :nom, prenom = :prenom,   email = :email,profil = :profil, password = :password WHERE email = :email');
+		$q = $this->getPDO()->prepare('UPDATE utilisateurs SET  
+				structure= (select ref(s) from structures s where s.nom =:structure ),
+				GROUPE_UTILISATEUR=(select ref(g) from GROUPES_UTILISATEUR g where g.nom =:groupe ),
+				nom = :nom, prenom = :prenom,   email = :email,profil = :profil, password = :password WHERE email = :email');
 		$q->bindValue(':nom', $uti->getNom(), PDO::PARAM_INT);
 		$q->bindValue(':prenom', $uti->getPrenom(), PDO::PARAM_INT);
 		$q->bindValue(':email', $uti->getEmail(), PDO::PARAM_INT);
 		$q->bindValue(':profil', $uti->getProfil(), PDO::PARAM_INT);
 		$q->bindValue(':password', $uti->getPassword(), PDO::PARAM_INT);
+		$q->bindValue(':structure', $uti->getStructure(), PDO::PARAM_INT);
+		$q->bindValue(':groupe', $uti->getGroupeUtilisateur(), PDO::PARAM_INT);
+		//echo var_dump($q);
 		$q->execute();
 		$q->closeCursor();
 	}

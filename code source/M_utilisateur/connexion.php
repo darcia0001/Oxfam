@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php'
 $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
  if (isset($_SESSION['utilisateur'])){//s il ya un utilisateur connecte on fait  une redirection
 	 $user =  unserialize($_SESSION['utilisateur']);
-     header('Location:..');
+     header("Location: ../accueil.php");exit();
      exit();
   }
 ?>
@@ -52,14 +52,29 @@ $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
                			$mdpentre=$_REQUEST['password'];
                			if (($user->getPassword()  == sha1($mdpentre))){//etat active
                				$_SESSION['utilisateur'] = serialize($user);
-               				header('Location:..');
-               				//die("<meta http-equiv='refresh' content=0;URL=".$user->getProfil().">");
+               				//redirection suivant le profil de l utilisateur connecte
+               				if($user->getProfil()=="agentprojet"){
+               					header('Location:../accueil.php');exit();
+               				}
+               				if($user->getProfil()=="agentoxfam"){
+               					if($user->getGroupeUtilisateur()=="administrateur"){
+               						header('Location:../accueilAdmin.php');exit();
+               					}
+               					if($user->getGroupeUtilisateur()=="agentvalidationoxfam"){
+               						header('Location:../M_projet/BackOffice.php');exit();
+               					}
+               					if($user->getGroupeUtilisateur()=="agentcontroleoxfam"){
+               						header('Location:../M_projet/BackOffice.php');exit();
+               					}
+               					//message d erreur
+               					
+               				}
                			}
                			else{//erreur 
                				//on doit refaire le log
                				echo '
-			                <form>
-			                <input name="email" class="col_12" type="text" placeholder="login" required=""/>
+			                <form method="post">
+			                <input name="email" class="col_12" type="text" placeholder="login" required="" />
 			                <input name="password" class="col_12" type="password" placeholder="mot de passe" required="" />
 			                <br />
 			                <button class="small red pill fright  icon-circle-arrow-right" type="submit">
@@ -83,7 +98,7 @@ $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
                	}//if user ! null
                	else{
                			echo '
-			                <form>
+			                <form method="post">
 			                <input name="email" class="col_12" type="text" placeholder="login" required=""/>
 			                <input name="password" class="col_12" type="password" placeholder="mot de passe" required="" />
 			                <br />

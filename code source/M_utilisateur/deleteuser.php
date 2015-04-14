@@ -12,10 +12,10 @@ $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de 
     if (isset($_SESSION['utilisateur'])){
 	 $user =  unserialize($_SESSION['user']);
 	   if (($user->getProfil())=='agenprojet'){//si c est un agent projet on le redirige
-	   	header("Location: ..");exit();
+	   	header("Location: ../accueil.php");exit();
 	   }
-	   if (($user->getProfil())=='agenprojet'){//si c est un agent oxfam on le redirige
-	   	header("Location: ..");exit();
+	   if (($user->getProfil()=='agentoxfam')&&($user->getGroupeUtilisateur()!="administrateur")){//si c est un agent oxfam non administrateur on le redirige
+	   		header("Location: ...accueil.php");exit();
 	   }
   }
 // --------------------------------------------------------------------------------

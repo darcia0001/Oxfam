@@ -11,14 +11,13 @@ class Ville {
 	 * @AttributeType String
 	 */
 	private $nomVille;
-	/**
-	 * @AssociationType M_Projets.Pays
-	 */
-	public $unnamed_Pays_;
-	/**
-	 * @AssociationType M_Projets.Projet
-	 * @AssociationKind Aggregation
-	 */
-	public $unnamed_Projet_;
+	private $nomPays;
+	
+	public function getNomVille(){ return $this->nomVille; }
+	public function setNomVille($val){ $this->nomVille= $val; }
+	
+	public function getNomPays(){ return $this->nomPays; }
+	public function setNomPays($val){ $this->nomPays= $val; }
+	
 }
 ?>
