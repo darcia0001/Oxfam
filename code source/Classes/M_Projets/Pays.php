@@ -1,7 +1,7 @@
 <?php
 require_once(realpath(dirname(__FILE__)) . '/../M_Projets/Monnaie.php');
 require_once(realpath(dirname(__FILE__)) . '/../M_Projets/Ville.php');
-require_once(realpath(dirname(__FILE__)) . '/../Class_48.php');
+//require_once(realpath(dirname(__FILE__)) . '/../Class_48.php');
 
 /**
  * @access public
