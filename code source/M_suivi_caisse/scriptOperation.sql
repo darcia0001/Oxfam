@@ -29,6 +29,24 @@ create type t_OperationBanque under t_Operation(
 create table operationCaisse of t_OperationCaisse ;
 create table operationBanque of t_OperationBanque ;
 
+
+INSERT INTO operationBanque values (
+	t_OperationBanque(
+		seq_opBanque.NEXTVAL,
+		'Operation1', 
+		'28-12-1882', 
+		25000,
+		'noteOperation 1', 
+		'etatSoumission 1', 
+		'soumission 1', 
+		'referencePaiement 2222',
+		1,
+		'type 1', 
+		'refOpe'
+	)
+);
+
+
 -- Insertion d'une opération	
 INSERT INTO operationCaisse values (
 	t_OperationCaisse(
@@ -42,7 +60,10 @@ INSERT INTO operationCaisse values (
 		'referencePaiement 2222', 
 		1, 
 		125
-	),
+	)
+);
+
+INSERT INTO operationCaisse values (
 	t_OperationCaisse(
 		seq_opCaisse.NEXTVAL,
 		'Operation2', 
@@ -54,8 +75,10 @@ INSERT INTO operationCaisse values (
 		'referencePaiem ent 2222', 
 		1, 
 		125
-	),
-	
+	)
+);
+
+INSERT INTO operationCaisse values (
 	t_OperationCaisse(
 		seq_opCaisse.NEXTVAL,
 		'Operation3', 
@@ -69,6 +92,8 @@ INSERT INTO operationCaisse values (
 		125
 	)
 );
+
+
 
 -- Séquence pour l'auto_incrémentation de l'ID de la table OperationCaisse
 CREATE SEQUENCE seq_opCaisse

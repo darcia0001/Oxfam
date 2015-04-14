@@ -212,6 +212,7 @@
 	
 	// *******************************************************************************
 	// *************************** MANAGEUR OPERATIONS  ******************************
+	require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/Operation.php');
 	require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/OperationBanque.php');
 	require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/OperationCaisse.php');
     class ManageurOperation{
@@ -293,39 +294,39 @@
         /*methodes de manipulation des operations */
     
          public function addOperationBanque(OperationBanque $opBanque){
-            $q = $this->getPDO()->prepare('select TO_CHAR(ref(l)) from lignebudget l where (l.libelle=\'bugget1\')');
-            try {
-            	$opBanque->setLigneBudget($q->execute()->fetchColumn());
-            }catch(PDOException $e){	
-                echo ($e->getMessage());
-            }	
-            $q = $this->getPDO()->prepare('INSERT INTO operationBanque SET libelle = :libelle, dateOperation = :dateOperation, sommeOperation = :sommeOperation,  noteOperation = :noteOperation, etatSoumission = :etatSoumission, soumission = :soumission, referencePaiement = :referencePaiement , typeOpBancaire = :typeOpBancaire');
-            $q->bindValue(':libelle', $opBanque->getLibelle());
-            $q->bindValue(':dateOperation', $opBanque->getDateOperation()); 
-            $q->bindValue(':sommeOperation', $opBanque->getSommeOperation());
-            $q->bindValue(':noteOperation', $opBanque->getNoteOperation());
-            $q->bindValue(':etatSoumission', $opBanque->getEtatSoumission());
-			$q->bindValue(':soumission', $opBanque->getSoumission());
-			$q->bindValue(':referencePaiement', $opBanque->getReferencePaiement());
-			$q->bindValue(':typeOpBancaire', $opBanque->getTypeOpBancaire());
-			//$q->bindValue(':ligneBudget', $opBanque->getLigneBudget);
-            try {
+            // $q = $this->getPDO()->prepare('select id from lignebudget l where (l.libelle=\'bugget1\')');
+            // try {
+            	// $opCaisse->setLigneBudget($q->execute()->fetchColumn());
+            // }catch(PDOException $e){	
+                // echo ($e->getMessage());
+            // }
+            
+            $opBanque->setLigneBudget(1); // test
+            $q = $this->getPDO()->prepare('INSERT INTO operationBanque values (seq_opCaisse.NEXTVAL, :libelle, :dateOperation, :sommeOperation, :noteOperation, :etatSoumission, :soumission, :referencePaiement, :ligneBudget, :typeOpBancaire, :referenceOperation)');
+            $q->bindParam (':libelle', $opBanque->getLibelle());
+            $q->bindParam(':dateOperation', date_format(date_create($opBanque->getDateOperation()), 'd-m-Y')); 
+            $q->bindParam(':sommeOperation', $opBanque->getSommeOperation());
+            $q->bindParam(':noteOperation', $opBanque->getNoteOperation());
+            $q->bindParam(':etatSoumission', $opBanque->getEtatSoumission());
+			$q->bindParam(':soumission', $opBanque->getSoumission());
+			$q->bindParam(':referencePaiement', $opBanque->getReferencePaiement());
+			$q->bindParam(':ligneBudget', $opBanque->getLigneBudget());
+			$q->bindParam(':typeOpBancaire', $opBanque->getTypeOpBancaire());
+			$q->bindParam(':referenceOperation', $opBanque->getReferenceOperation());
+			try {
             	$q->execute();
             }catch(PDOException $e){	
                 echo ($e->getMessage());
             }
-            //on informe l'objet de son id dans la base
-            // $opBanque->hydrate(array(
-                    // 'id' => $this->getPDO()->lastInsertId()
-            // ));
         }
 		public function addOperationCaisse(OperationCaisse $opCaisse){
-			$q = $this->getPDO()->prepare('select TO_CHAR(ref(l)) from lignebudget l where (l.libelle=\'bugget1\')');
-            try {
-            	$opCaisse->setLigneBudget($q->execute()->fetchColumn());
-            }catch(PDOException $e){	
-                echo ($e->getMessage());
-            }
+			// $q = $this->getPDO()->prepare('select id from lignebudget l where (l.libelle=\'bugget1\')');
+            // try {
+            	// $opCaisse->setLigneBudget($q->execute()->fetchColumn());
+            // }catch(PDOException $e){	
+                // echo ($e->getMessage());
+            // }
+            $opCaisse->setLigneBudget(1); // test
             $q = $this->getPDO()->prepare('INSERT INTO operationCaisse values (seq_opCaisse.NEXTVAL, :libelle, :dateOperation, :sommeOperation, :noteOperation, :etatSoumission, :soumission, :referencePaiement, :ligneBudget, :numRecu)');
             $q->bindParam (':libelle', $opCaisse->getLibelle());
             $q->bindParam(':dateOperation', date_format(date_create($opCaisse->getDateOperation()), 'd-m-Y')); 
@@ -364,25 +365,44 @@
         } 
 		
         public function deleteOperationBanque($idOpBanque){
-            $this->getPDO()->exec('DELETE FROM OperationBanque WHERE id = '.$idOpBanque);
+        	 $q = $this->getPDO()->prepare('DELETE FROM OperationBanque WHERE id = '.$idOpBanque);
+            try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
         }
 		public function deleteOperationCaisse($idOpCaisse){
-            $this->getPDO()->exec('DELETE FROM OperationCaisse WHERE id = '.$idOpCaisse);
+			 $q = $this->getPDO()->prepare('DELETE FROM OperationCaisse WHERE id = '.$idOpCaisse);
+            try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
+            }
         }
 		
         public function getOperationBanque($id){
             $opBanque=array();
-            if (is_int($info)){
-              $q = $this->getPDO()->query('SELECT * FROM OperationBanque WHERE id = '.$id);
-              $opBanque = $q->fetch(PDO::FETCH_ASSOC);
+            
+			$q = $this->getPDO()->prepare('SELECT * FROM OperationBanque WHERE id = '.$id);
+            try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
             }
+			 $opBanque = $q->fetch(PDO::FETCH_ASSOC);
+            return $opBanque;
         }
 		public function getOperationCaisse($id){
             $opCaisse=array();
-            if (is_int($info)){
-              $q = $this->getPDO()->query('SELECT * FROM OperationCaisse WHERE id = '.$id);
-              $opCaisse = $q->fetch(PDO::FETCH_ASSOC);
+			$q = $this->getPDO()->prepare('SELECT * FROM OperationCaisse WHERE id = '.$id);
+            try {
+            	$q->execute();
+            }catch(PDOException $e){	
+                echo ($e->getMessage());
             }
+			 $opCaisse = $q->fetch(PDO::FETCH_ASSOC);
+            return $opCaisse;
         }
     	
 		  public function getListOperationBanque(){
@@ -453,193 +473,4 @@
         }
     
     }//fin class ManageurOperation
-  
-
-    //************************************************************************************
-    //***************************** Manager Budget **************************************
-    
-	require_once(realpath(dirname(__FILE__)) . '/../M_Budget/BudgetProjet.php');
-	require_once(realpath(dirname(__FILE__)) . '/../M_Budget/LigneBudget.php');
-	require_once(realpath(dirname(__FILE__)) . "/../M_Budget/PlanAnnuel.php");
-	require_once(realpath(dirname(__FILE__)) . "/../M_Budget/PlanMensuel.php");
-	require_once(realpath(dirname(__FILE__)) . "/../M_Budget/Themes.php");
-	require_once(realpath(dirname(__FILE__)) . "/../M_Budget/AnneeComptable.php");
-	require_once(realpath(dirname(__FILE__)) . "/../M_Budget/ActiviteB.php");
-
-class ManageurBudget{
-	/**
-	* Instance de la classe PDO
-	*
-	* @var PDO
-	* @access private
-	*/
-	private $PDOInstance = null;
-	/**
-	* Instance de la classe Manageur2
-	*
-	* @var Manageur2
-	* @access private
-	* @static
-	*/
-	private static $instance = null;
-	/**
-	* Constante: nom d'utilisateur de la bdd
-	*
-	* @var string
-	*/
-	const DEFAULT_SQL_USER = 'riki';
-	/**
-	* Constante: hôte de la bdd
-	*
-	* @var string
-	*/
-	const DEFAULT_SQL_HOST = 'localhost/XE';
-	/**
-	* Constante: hôte de la bdd
-	*
-	* @var string
-	*/
-	const DEFAULT_SQL_PASS = 'passer';
-	/**
-	* Constante: nom de la bdd
-	*
-	* @var string
-	*/
-	const DEFAULT_SQL_DTB = 'oxfam';
-	/**
-	* Constructeur
-	*
-	* @param void
-	* @return void
-	* @see PDO::__construct()
-	* @access private
-	*/
-	private function __construct(){
-		$conn = oci_pconnect('riki', 'passer', 'localhost/XE');
-	 }
-	/**
-	* Crée et retourne l'objet Manageur2 : Singleton
-	*
-	* @access public
-	* @static
-	* @param void
-	* @return Manageur2 $instance
-	*/
-		public static function getInstance(){
-		if(is_null(self::$instance)){
-			self::$instance = new Manageur2();
-		}
-		return self::$instance;
-	}
-	public function getPDO(){
-		$conn = oci_pconnect('riki', 'passer', 'localhost/XE');
-		return $conn;
-	}
-	/*methodes de manipulation des utilisateurs */
-
-	public function addMois(Mois $m){
-
-		$request = 'insert into Mois(code, libelle, etat)'.
-					'values (:code, :lib , :etat)'; 
-		$insert = oci_parse($this->getPDO(), $request);
-		oci_bind_by_name($insert, ':code', $m->getCode);
-		oci_bind_by_name($insert, ':lib', $m->getLibelle);
-		oci_bind_by_name($insert, ':etat', $m->getEtat);
-
-		$execute = oci_execute($insert);
-		if ($execute != 0){
-			echo "reussi";
-		}
-		else
-			echo "erreur exe: ".$execute;
-		return $execute;
-	}
-	 public function addEltPlanMensuel($options){
-	 	$request = 'insert into ElementPlanMensuel(code, libelle, montant)'.
-					'values (:code, :lib , :montant)'; 
-		$insert = oci_parse($this->getPDO(), $request);
-		oci_bind_by_name($insert, ':code', $m->getCode);
-		oci_bind_by_name($insert, ':lib', $m->getLibelle);
-		oci_bind_by_name($insert, ':montant', $m->getMontant);
-
-		$execute = oci_execute($insert);
-		if ($execute != 0){
-			echo "reussi";
-		}
-		else
-			echo "erreur exe: ".$execute;
-		return $execute;
-	 
-	}
-	 public function addLigneBudget(LigneBudget $l){
-	 	$request = 'insert into LigneBudget(libelle, montantprevu, montantexecute)'.
-					'values (:lib, :mntprev, :mntexec)'; 
-		$insert = oci_parse($this->getPDO(), $request);
-		oci_bind_by_name($insert, ':lib', $l->getLibelle);
-		oci_bind_by_name($insert, ':mntprev', $l->getMontantPrevu);
-		oci_bind_by_name($insert, ':mntexec', $l->getMontantExecute);
-
-		$execute = oci_execute($insert);
-		if ($execute != 0){
-			echo "reussi";
-		}
-		else
-			echo "erreur exe: ".$execute;
-		return $execute;
-	}
-
-	//Pour fermer un plan mensuel il suffit tout juste de mettre son etat à "fermer" 
-	//RMQ = Un plan mensuel ouvert a un état "ouvert"
-	//Dans la classe Manager
-	public function closePlanMensuel(PlanMensuel $toClose){
-		$toClose->$mois->setEtat("fermer");
-	}
-
-	public function deleteUtilisateurById($id){
-		
-		
-	}
-	public function existUtilisateur($info){
-		
-	}
-	public function getUtilisateur($info){
-
-	}
-	
-	
-	public function getUtilisateurByEmail($info){
-	
-	}
-	 public function getListUtilisateur(){
-	 
-  }
-	public function update(Utilisateur $uti){
-		
-	}
-
-	public function getListUtilisateurNew(){
-	 	
-  }
-  	 public function countUtilisateurNew(){
-	
-	}
-
-	//cette méthode permet de récuperer la liste des thèmes dans la base de données
-	//Elle est utile dans l'ajoute d'une opération
-	public function getListeThemes(){
-		$query = 'SELECT TO_CHAR(ref(t)) , libelle  FROM  Themes t'; //on peut aussi passer par la classe BudgetProjet pour selecter la listeTheme
-		$parse = oci_parse($this->getPDO(), $query);
-		$execute = oci_execute($request);
-		return $execute;
-	}  
-
-	//Cette méthode permet de récuperer dans la base de données la liste des ligne budgetaires
-	public function getListLigneBudgetaire(){
-		$query = 'SELECT TO_CHAR(ref(l)) , libelle FROM  LigneBudget l'; 
-		$parse = oci_parse($this->getPDO(), $query);
-		$execute = oci_execute($request);
-		return $execute;
-	}
-
-}//fin class Manager budget
 ?>

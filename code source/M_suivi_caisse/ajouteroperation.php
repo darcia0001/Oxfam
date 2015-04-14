@@ -3,13 +3,14 @@ require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD.php'
 require_once(realpath(dirname(__FILE__)) . '/../Classes/M_SuiviCaisse/OperationBanque.php');
 require_once(realpath(dirname(__FILE__)) . '/../Classes/M_SuiviCaisse/OperationCaisse.php');
 $manageur=ManageurOperation::getInstance();
-$listeOpCaisse = $manageur->getListOperationCaisse();
+$listeOpCaisse = $manageur->getListOperationCaisse(1);
 //var_dump($listeOpCaisse);
 if ( isset($_REQUEST["typeOperation"])){
 	if ($_REQUEST["typeOperation"]=="Caisse"){
 		$opCaisse = new OperationCaisse(array());
 		$opCaisse->setDateOperation($_REQUEST["dateOperation"]);
 		$opCaisse->setSommeOperation($_REQUEST["sommeOperation"]);
+		$opCaisse->setNoteOperation($_REQUEST["noteOperation"]);
 		$opCaisse->setLibelle($_REQUEST["libelle"]);
 		$opCaisse->setReferencePaiement($_REQUEST["referencePaiement"]);
 		$opCaisse->setNumRecu($_REQUEST["numRecu"]);
@@ -20,6 +21,7 @@ if ( isset($_REQUEST["typeOperation"])){
 		$opBanque = new OperationBanque(array());
 		$opBanque->setDateOperation($_REQUEST["dateOperation"]);
 		$opBanque->setSommeOperation($_REQUEST["sommeOperation"]);
+		$opBanque->setNoteOperation($_REQUEST["noteOperation"]);
 		$opBanque->setLibelle($_REQUEST["libelle"]);
 		$opBanque->setReferencePaiement($_REQUEST["referencePaiement"]);
 		$opBanque->setTypeOpBancaire($_REQUEST["typeOpBancaire"]);
@@ -88,6 +90,19 @@ if ( isset($_REQUEST["typeOperation"])){
 		            </h3>
 		    </div>
 		    
+		    <?php 
+		    	if ( isset($_REQUEST["typeOperation"])){
+		    	echo '
+				<div class="col_4 fright txtalignright" >
+			    <div class="notice success" id="alerte_operation">
+				    	<i class="icon-remove-sign icon-large"></i> Opération ajoutées avec succès !!
+				        <a href="#close" class="icon-remove"></a>
+				    </div>
+				</div>
+                ';
+                }
+		 ?>
+		    
 		    <!-- TODO : Alerte à gérer avec Javascript, par défaut caché -->
 		    <div class="col_4 fright txtalignright" >
 			    <div class="notice error" hidden id="alerte_operation">
@@ -116,24 +131,13 @@ if ( isset($_REQUEST["typeOperation"])){
 			            <div class="notice  col_4 fright txtalignright"> Budget Restant Ligne : XXXXXXX F
 			      </div>
 			    </div>
-			    
-			      <div class="col_12 "> 
-			          <div class="col_5 ">
-			          <label  class="col_4"> Choix du Thème</label>
-			          <select  class="col_7 fright" >
-			          <option value="">-- Liste thèmes  --</option>
-			          
-			          </select   >
-			        </div>
-			        
-			    </div>
-			    
+			    </br></br>
 			    <div class="col_12 "> 
-			         <div class="col_5 "> 
-				          <label for="rubrique" class="col_4"> Choix rubrique</label>
-				          <select  id="rubrique" class="col_7 fright" >
-				          		<option value="">-- Liste rubriques  --</option>
-				          </select   >
+			         <div class="col_5 ">
+				          <label  class="col_4"> Choix du Thème</label>
+				          <select  class="col_7 fright" >
+				          	<option value="">-- Liste thèmes  --</option>
+			          	  </select   >
 			        </div>
 			        <div class="col_2"></div>
 			        <div class="col_5"> 

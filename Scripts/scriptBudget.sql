@@ -88,6 +88,9 @@ CREATE TYPE t_activiteB AS object(
  	libelle varchar(30),
  	refActiveB t_refActiviteB
  	);
+
+select deref(refActiveB) from thmes where refActiveB in (select refActiveB from themes p where p.code=code1);
+	
  -- la classe BudgetProjet a une liste d'instance de la classe Themes. Donc nous créons une colléction de  TABLE  de t_themes
  CREATE TYPE t_refTheme AS object (
  	valeur ref t_themes
@@ -113,7 +116,6 @@ CREATE TYPE t_planAnnuel AS object (
 	refBudgetProjet ref t_budgetProjet,
 	listePlanMensuel t_listeRefPlanMensuel
 	);
-
 
 -- creation des tables des différentes classes 
 
