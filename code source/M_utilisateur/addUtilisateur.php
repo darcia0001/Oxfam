@@ -252,7 +252,7 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
 								                                            
 																				
 																					<div class="form-group">
-								                                            		<label> Groupes d\'utilisateurs Agent Projet</label>
+								                                            		<label> Groupes d\'utilisateurs </label>
 																					<select name="groupe" class="form-control" required="" >
 												                   					<option class="selectGroupeProjet" value="gestionnaireprojet">Gestionnaire Projet</option>
 												                   					<option class="selectGroupeProjet" value="operateurprojet">Operateur Projet</option>
@@ -331,7 +331,7 @@ if(isset($_REQUEST["modifier"])&isset($_REQUEST["email"])){//premier entree dans
 								                                        </div>
                     													
 																					<div class="form-group">
-								                                            		<label> Groupes d\'utilisateurs Agent Projet</label>
+								                                            		<label> Groupes d\'utilisateurs </label>
 																					<select name="groupe" class="form-control" required="" >
 												                   					<option class="selectGroupeProjet" value="gestionnaireprojet">Gestionnaire Projet</option>
 												                   					<option class="selectGroupeProjet" value="operateurprojet">Operateur Projet</option>

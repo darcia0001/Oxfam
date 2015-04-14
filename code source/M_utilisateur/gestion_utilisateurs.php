@@ -43,20 +43,20 @@ $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de 
     
      $(document).ready(function() {   
     	//alert("charger");
-//     	$('#modifUser').change(
-//         		function() {        			
-//         	            var val = $('#selectProfil option:selected').val();
-//         	            if (val == "agentoxfam") {
+    	$('#modifUser').change(
+        		function() {        			
+        	            var val = $('#selectProfil option:selected').val();
+        	            if (val == "agentoxfam") {
         	                
-//         	                $(".selectGroupeOxfam").show();
-//         	                $(".selectGroupeProjet").hide();
-//         	            }
-//         	            if (val == "agentprojet") {
+        	                $(".selectGroupeOxfam").show();
+        	                $(".selectGroupeProjet").hide();
+        	            }
+        	            if (val == "agentprojet") {
         	            	
-//         	                $(".selectGroupeOxfam").hide();
-//         	                $(".selectGroupeProjet").show();
-//         	            }
-//         		});
+        	                $(".selectGroupeOxfam").hide();
+        	                $(".selectGroupeProjet").show();
+        	            }
+        		});
     $(function () {
         //alert("");
         $(".selectGroupeOxfam").hide();
