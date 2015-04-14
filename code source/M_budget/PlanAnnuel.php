@@ -40,5 +40,25 @@ class PlanAnnuel {
 		$this->$montamtTotalPrevu = $montamtTotalPrevu;
 		$this->$unnamed_PlanMensuel_ = new PlanMensuel($code, $libelle);
 	}
+	
+	public function setCode($code){
+		$this->$code = $code;
+	}
+	public function getCode(){
+		return $this->$code;
+	}
+	
+	public function setLibelle($libelle){
+		$this->$libelle = $libelle;
+	}
+	public function getLibelle(){
+		return $this->$libelle;
+	}
+	public function setMontamtTotalPrevu($montamtTotalPrevu){
+		$this->$montamtTotalPrevu = $montamtTotalPrevu;
+	}
+	public function getMontamtTotalPrevu(){
+		return $this->$montamtTotalPrevu;
+	}
 }
 ?>

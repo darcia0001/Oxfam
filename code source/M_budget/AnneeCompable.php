@@ -46,6 +46,14 @@ class AnneeComptable {
 		return $this->$code;
 	}
 
+	public function setEta($etat){
+		$this->$etat = $etat;
+	}
+	
+	public function getEtat(){
+		return $this->$etat;
+	}
+	
 	public function setLibelle($libelle){
 		$this->$libelle = $libelle;
 	}
