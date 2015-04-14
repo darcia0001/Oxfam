@@ -29,5 +29,29 @@ class AnneeComptable {
 	 * @AssociationKind Composition
 	 */
 	public $unnamed_Mois_;
+
+	public function __construct($code, $libelle, $etat){
+		$this->$code = $code;
+		$this->$libelle = $libelle;
+		$this->$etat  =$etat;
+		$this->unnamed_Mois_ = new Mois[12];
+		//$this->unnamed_Mois_ = new Mois($code, $libelle, $etat);
+	}
+
+	///getters et setters
+	public function setCode($code){
+		$this->$code = $code;
+	}
+	public function getCode(){
+		return $this->$code;
+	}
+
+	public function setLibelle($libelle){
+		$this->$libelle = $libelle;
+	}
+	public function getLibelle(){
+		return $this->$libelle;
+	}
+	
 }
 ?>
