@@ -31,17 +31,19 @@ class Utilisateur {
 	/**
 	 * @AssociationType M_Utilisateur.GroupeUtilisateur
 	 */
-	public $groupeUtilisateur_;
+	public $groupeUtilisateur;
 	/**
 	 * @AssociationType M_Utilisateur.Structure
 	 */
 	public $structure;
+	//constructeur
+	public function __construct($donnees)	{
+		$this->hydrate($donnees);
+	}
 	public function   getId() {
 		return $this->id;
 	}
-	public function   _wakeup() {
 	
-	}
 	public function setId( $id) {
 		$this->id = $id;
 	}
@@ -88,6 +90,18 @@ class Utilisateur {
 	}
 	public function setProfil( $profil) {
 		$this->profil = $profil;
+	}
+	public function getStructure() {
+		return $this->structure;
+	}
+	public function setStructure( $structure) {
+		$this->structure = $structure;
+	}
+	public function getGroupeUtilisateur() {
+		return $this->groupeUtilisateur;
+	}
+	public function setGroupeUtilisateur( $groupeUtilisateur) {
+		$this->groupeUtilisateur = $groupeUtilisateur;
 	}
 	//hydratation de l objet grace au donnnees de la base
 	public function hydrate(array $donnees){

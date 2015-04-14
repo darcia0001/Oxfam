@@ -1,7 +1,7 @@
 <?php session_start();  
 require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php');
- if (isset($_SESSION['user'])){
-	 $user =  unserialize($_SESSION['user']);
+ if (isset($_SESSION['utilisateur'])){
+	 $user =  unserialize($_SESSION['utilisateur']);
 	   if (($user->getProfil())!='administrateur')
      		header("Location: .." );
 }
@@ -10,7 +10,7 @@ if (isset($_REQUEST['email']))//
 		$_SESSION['email']=$_REQUEST['email'];
 
 if ((isset($_REQUEST['code'])) && (isset($_SESSION['code']))){
-	if ($_POST['code']==$_SESSION['code'] ) // Si la correspondance est vérifié on va à l'étape 1 du scénario de pré-inscription
+	if ($_REQUEST['code']==$_SESSION['code'] ) // Si la correspondance est vérifié on va à l'étape 2 du scénario de pré-inscription
 		die("<meta http-equiv='refresh' content=0;URL='inscription_step2.php'>");
 }
 

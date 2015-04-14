@@ -7,14 +7,47 @@ require_once(realpath(dirname(__FILE__)) . '/../M_Utilisateur/Privilege.php');
  * @package M_Utilisateur
  */
 class GroupeUtilisateur {
-	/**
-	 * @AssociationType M_Utilisateur.Utilisateur
-	 */
-	public $unnamed_Utilisateur_;
+	public $nom;
+	public $id;
 	/**
 	 * @AssociationType M_Utilisateur.Privilege
 	 * @AssociationKind Aggregation
 	 */
-	public $unnamed_Privilege_;
+	public $privilege;
+	public function __construct($donnees)	{
+		$this->hydrate($donnees);
+	}
+	public function getPrivilege(){
+		return $privilege;
+	}
+	public function setPrivilege($privilege){
+		$this->privilege=$privilege;
+	}
+	public function   getId() {
+		return $this->id;
+	}
+	 
+	public function setId( $id) {
+		$this->id = $id;
+	}
+	public function getNom() {
+		return $this->nom;
+	}
+	public function setNom($nom) {
+	
+		$this->nom = $nom;
+	
+	}
+	public function hydrate(array $donnees){
+		foreach ($donnees as $key => $value)
+		{
+			$method = 'set'.ucfirst($key);//on construit le setter potentiel pour chak info
+	
+			if (method_exists($this, $method))
+			{
+				$this->$method($value);//on fait  l affectation
+			}
+		}
+	}
 }
 ?>
