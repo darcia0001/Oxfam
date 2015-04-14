@@ -83,7 +83,7 @@
                     ?>
                     <div class="alert alert-danger alert-dismissable col-md-6 col-md-offset-3" align="center">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">�</button>
-                        Votre compte a �t� bloqu�. Veuillez contacter votre admisitrateur. Merci.
+                        Votre compte a été bloqué. Veuillez contacter votre admisitrateur. Merci.
                     </div>
                     <?php
                             }
