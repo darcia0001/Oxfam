@@ -180,6 +180,7 @@
  if (isset($_POST['codeMois']) and isset($_POST['libelleMois']) ){
  	$codeMois = $_POST['codeMois'];
  	$libelleMois = $_POST['libelleMois'];
+ 	$etat = "ouvert";
  }
  else
  	echo "verifier que vous avez remplis tous les champs";
@@ -201,7 +202,7 @@
  	   lib elmt plan mens: ".$libelleElementPlanMensuel." mont : ".$montantElementPlanMensuel."<br/>
  	   lib ligne budget: ".$libelleLigneBudget." mont prev: ".$montantPrevuLigneBudget." mnt exec: ".$mntExec;
 
- 	   	$mois = new Mois($codeMois, $libelleMois);
+ 	   	$mois = new Mois($codeMois, $libelleMois,$etat);
  	   	$epm = new ElementPlanMensuel($codeMois, $libelleElementPlanMensuel, $montantElementPlanMensuel);
  	   	$lbd = new LigneBudget($libelleLigneBudget, $montantPrevuLigneBudget, $mntExec);
 
