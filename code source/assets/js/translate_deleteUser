@@ -1,0 +1,33 @@
+// load I18N bundles
+$(document).ready(function () {
+    loadBundles($.i18n.browserLang());
+    // configure language combo box
+    $('#lang').change(function () {
+        var selection = $('#lang option:selected').val();
+        loadBundles(selection !== 'browser' ? selection : $.i18n.browserLang());
+    });
+});
+
+function loadBundles(lang) {
+    $.i18n.properties({
+        name: 'deleteUser',
+        path: '../assets/bundle/',
+        mode: 'both',
+        language: lang,
+        callback: function () {
+            $("#lb_oxfProj").text(lb_oxfProj);
+            $("#lb_delUser").text(lb_delUser);
+            $("#lb_userDel").text(lb_userDel);
+            $("#lb_userFound").text(lb_userFound);
+            $("#hd_fName").text(hd_fName);
+            $("#hd_name").text(hd_name);
+            $("#btn_delete").text(btn_delete);
+            $(".lb_userNotFound").text(lb_userNotFound);
+            $("#lb_userNotExist").text(lb_userNotExist);
+            $("#lb_userDeleted").text(lb_userDeleted);
+            $("#lb_backTop").text(lb_backTop);
+            $(".lb_conf").text(lb_conf);
+            $(".lb_terms").text(lb_terms);
+        }
+    });
+}

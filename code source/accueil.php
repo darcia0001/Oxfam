@@ -4,7 +4,7 @@ $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de 
 // ---------------------------- gestion de la securité -------------------------
 session_start();
 if (!isset($_SESSION['utilisateur'])){
-	header('Location:  connexion.php');
+	header('Location:  M_utilisateur/connexion.php');
 	exit();
 }
 
@@ -36,11 +36,11 @@ if (!isset($_SESSION['utilisateur'])){
 				</p>
 				<img class="col_2" src="assets/img/logo.png" />
 				<div class="col_4">
-					<span class="col_12">Bienvenue Ã  </span><span class="col_12"><span class="col_6">Prenom </span><span class="col_6">NOM </span></span><span class="col_12">Nom du projet / Pays</span>
+					<span class="col_12">Bienvenue à  </span><span class="col_12"><span class="col_6">Prenom </span><span class="col_6">NOM </span></span><span class="col_12">Nom du projet / Pays</span>
 					<span class="col_12">
 						<select>
 							<option value="">-- Choix langue --</option>
-							<option value="">FranÃ§ais</option>
+							<option value="">Français</option>
 							<option value="">Anglais</option>
 						</select> </span>
 				</div>

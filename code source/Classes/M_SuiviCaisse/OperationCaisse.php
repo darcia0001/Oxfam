@@ -22,15 +22,5 @@ class OperationCaisse extends Operation {
 		return $this->numRecu=$numRecu;
 	}
 	
-	/**
-	 * @AttributeType Long
-	 */
-	private $ligneBudget;
-	public function   getLigneBudget() {
-		return $this->ligneBudget;
-	}
-	public function  setLigneBudget($ligneBudget) {
-		return $this->ligneBudget= $ligneBudget;
-	}
 }
 ?>

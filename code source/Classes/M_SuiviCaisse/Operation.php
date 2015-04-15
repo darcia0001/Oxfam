@@ -97,6 +97,17 @@ class Operation {
 		return $this->referencePaiement=$referencePaiement;
 	}
 	
+	/**
+	 * @AttributeType String
+	 */
+	private $ligneBudget;
+	public function   getLigneBudget() {
+		return $this->ligneBudget;
+	}
+	public function   setLigneBudget($ligneBudget) {
+		return $this->ligneBudget=$ligneBudget;
+	}
+	
 	/*
 	// @AssociationType M_Budget.LigneBudget 
 	public $_;

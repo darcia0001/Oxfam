@@ -110,7 +110,8 @@
 									                            <th>Date Opération</th>
 									                            <th style="width:15%;overflow:auto">Somme </th>
 									                            <th style="width:10%;overflow:auto">Note </th>
-																<th style="width:10%;overflow:auto">Num Recu</th>
+																<th style="width:10%;overflow:auto">Recu / Ref</th>
+																<th style="width:10%;overflow:auto">Types</th>
 									                            <th>Actions</th>
 									                        </tr>
 									                    </thead>
@@ -120,9 +121,13 @@
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
-															$listeOpCaisse = $manageur->getListOperationCaisse();
-															$opCaisse = new OperationCaisse(array());	
-																//echo var_dump($lesutilisateurs);
+															$idLigneBudget = 1 ; // L'id de la ligne budgéetaire
+															$listeOpCaisse = $manageur->getListOperationCaisse($idLigneBudget);
+															$listeOpBanque = $manageur->getListOperationBanque($idLigneBudget);
+															$opCaisse = new OperationCaisse(array());
+															$opBanque = new OperationBanque(array());	
+															
+															// Listing des opération Caisse
 																foreach ($listeOpCaisse as $opCaisse){
 																 ?>	
 																  
@@ -131,22 +136,49 @@
 									                            <td><?php  echo $opCaisse->getSommeOperation() ?>	</td>
 									                            <td><?php  echo $opCaisse->getNoteOperation() ?>	</td>
 									                            <td><?php  echo $opCaisse->getNumRecu()  ?>	</td>
+									                            <td> Caisse </td>
 									                        
 									                            <td>
 																<center>
-																		<a href="#" title="Afficher" id="<?php  echo $opCaisse->getID()  ?> " 
-									                            				onclick="showOperation(this.id);"  
-									                            				type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#showOperation">
-									                            				<i class="fa fa-eye"></i>
-									                            		</a>
+																	
 									                            		<a href="#" title="Modifier" id="<?php  echo $opCaisse->getId()  ?>" 
-									                            				onclick="modifyOperation(this.id);"  
-									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyOperation">
+									                            				onclick="modifyMeta(this.id);"  
+									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyMeta">
 									                            				<i class="fa fa-edit"></i>
 									                            		</a>
 									                            		<a href="#"  title="Supprimer"id=" <?php  echo $opCaisse->getId()  ?> " 
-									                                    		onclick="deleteOperation(this.id);"
-									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delOperation">
+									                                    		onclick="deleteMeta(this.id);"
+									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delMeta">
+									                                    		 <i class="fa fa-times"></i>
+									                            		 </a>
+									                       		</center>
+									                       </td>
+									                        </tr>
+																 
+														   <?php 
+																}										                       
+									                       // Listing des opération Banque
+																foreach ($listeOpBanque as $opBanque){
+																 ?>	
+																  
+									                            <td><?php  echo $opBanque->getLibelle() ?>	</td>
+									                            <td><?php  echo $opBanque->getDateOperation() ?>	</td>
+									                            <td><?php  echo $opBanque->getSommeOperation() ?>	</td>
+									                            <td><?php  echo $opBanque->getNoteOperation() ?>	</td>
+									                            <td><?php  echo $opBanque->getReferenceOperation()  ?>	</td>
+									                            <td> Banque </td>
+									                        
+									                            <td>
+																<center>
+																		
+									                            		<a href="#" title="Modifier" id="<?php  echo $opBanque->getId()  ?>" 
+									                            				onclick="modifyMeta(this.id);"  
+									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyMeta">
+									                            				<i class="fa fa-edit"></i>
+									                            		</a>
+									                            		<a href="#"  title="Supprimer"id=" <?php  echo $opBanque->getId()  ?> " 
+									                                    		onclick="deleteMeta(this.id);"
+									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delMeta">
 									                                    		 <i class="fa fa-times"></i>
 									                            		 </a>
 									                       		</center>
@@ -191,7 +223,8 @@
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
-															$listeOpCaisse = $manageur->getListOperationCaisse();
+															$idLigneBudget = 2 ; // L'id de la ligne budgéetaire
+															$listeOpCaisse = $manageur->getListOperationCaisse($idLigneBudget);
 															$opCaisse = new OperationCaisse(array());	
 																//echo var_dump($lesutilisateurs);
 																foreach ($listeOpCaisse as $opCaisse){
@@ -205,19 +238,14 @@
 									                        
 									                            <td>
 																<center>
-																		<a href="#" title="Afficher" id="<?php  echo $opCaisse->getID()  ?> " 
-									                            				onclick="showOperation(this.id);"  
-									                            				type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#showOperation">
-									                            				<i class="fa fa-eye"></i>
-									                            		</a>
 									                            		<a href="#" title="Modifier" id="<?php  echo $opCaisse->getId()  ?>" 
-									                            				onclick="modifyOperation(this.id);"  
-									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyOperation">
+									                            				onclick="modifyMeta(this.id);"  
+									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyMeta">
 									                            				<i class="fa fa-edit"></i>
 									                            		</a>
 									                            		<a href="#"  title="Supprimer"id=" <?php  echo $opCaisse->getId()  ?> " 
-									                                    		onclick="deleteOperation(this.id);"
-									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delOperation">
+									                                    		onclick="deleteMeta(this.id);"
+									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delMeta">
 									                                    		 <i class="fa fa-times"></i>
 									                            		 </a>
 									                       		</center>
@@ -262,7 +290,8 @@
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
-															$listeOpCaisse = $manageur->getListOperationCaisse();
+															$idLigneBudget = 3 ;
+															$listeOpCaisse = $manageur->getListOperationCaisse($idLigneBudget);
 															$opCaisse = new OperationCaisse(array());	
 																//echo var_dump($lesutilisateurs);
 																foreach ($listeOpCaisse as $opCaisse){
@@ -276,19 +305,15 @@
 									                        
 									                            <td>
 																<center>
-																		<a href="#" title="Afficher" id="<?php  echo $opCaisse->getID()  ?> " 
-									                            				onclick="showOperation(this.id);"  
-									                            				type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#showOperation">
-									                            				<i class="fa fa-eye"></i>
-									                            		</a>
+																
 									                            		<a href="#" title="Modifier" id="<?php  echo $opCaisse->getId()  ?>" 
-									                            				onclick="modifyOperation(this.id);"  
-									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyOperation">
+									                            				onclick="modifyMeta(this.id);"  
+									                            				type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyMeta">
 									                            				<i class="fa fa-edit"></i>
 									                            		</a>
 									                            		<a href="#"  title="Supprimer"id=" <?php  echo $opCaisse->getId()  ?> " 
-									                                    		onclick="deleteOperation(this.id);"
-									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delOperation">
+									                                    		onclick="deleteMeta(this.id);"
+									                                    		 type="button"  class="btn btn-danger btn-circle" data-toggle="modal" data-target="#delMeta">
 									                                    		 <i class="fa fa-times"></i>
 									                            		 </a>
 									                       		</center>
@@ -317,8 +342,36 @@
 	            <!-- /.row -->
 		</div>
 		<div align="center" class="well"> 
-		            		<a href="ajouteroperation.php">Ajouter une opération</a> 
-		            </div>
+        		<a href="ajouteroperation.php">Ajouter une opération</a> 
+        </div>
+        
+        <!-- MODAL POUR LA SUPPRESSION D'UNE METADONNEE  -->
+		    <div class="modal fade" id="delMeta" tabindex="-1" role="dialog" aria-labelledby="deleteUser" aria-hidden="true">
+		      <div class="modal-dialog modal-lg" >
+		        <div class="modal-content" id='deleteMeta'>
+		          
+		          
+		          
+		  
+		  
+		  		
+		  		5555  
+		        </div>
+		      </div>
+		    </div>
+	    
+	     <!-- MODAL POUR LA MODIFICATION D'UNE METADONNEE -->
+	    <div class="modal fade" id="modifyMeta" tabindex="-1" role="dialog" aria-labelledby="modifyUser" aria-hidden="true">
+	      <div class="modal-dialog modal-lg" id='modifMeta'>
+	        
+		                            <!-- Le formulaire à ajouter ici avec les recnseignements sur l'utilisateur, avec AJAX -->
+							             
+							             
+		                        
+		                        <!-- /.panel-body -->
+		                    </div>
+		        </div>
+        
 </body>
 
 
@@ -442,6 +495,88 @@ $(document).ready(function() {
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     
+	<script>
 	
+	function modifyMeta(id) {
+	  if (window.XMLHttpRequest) {
+	    // code for IE7+, Firefox, Chrome, Opera, Safari
+	    xmlhttp=new XMLHttpRequest();
+	  } else { // code for IE6, IE5
+	    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  xmlhttp.onreadystatechange=function() {
+	    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+	      document.getElementById("modifMeta").innerHTML=xmlhttp.responseText;
+	    }
+	  }
+	 xmlhttp.open("GET","ajax/modifmeta.php?rechercher=1&&id="+id,true);
+	  xmlhttp.send();
+	}
+	
+	function deleteMeta(id) {
+	  if (window.XMLHttpRequest) {
+		    // code for IE7+, Firefox, Chrome, Opera, Safari
+		    xmlhttp=new XMLHttpRequest();
+		  } else { // code for IE6, IE5
+		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  xmlhttp.onreadystatechange=function() {
+		    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		      document.getElementById("deleteMeta").innerHTML=xmlhttp.responseText;
+		    }
+		  }
+		 xmlhttp.open("GET","ajax/deleteMeta.php?rechercher=1&&id="+id,true);
+		 xmlhttp.send();
+	}
+	
+	function confirmDelete(id) {
+	  if (window.XMLHttpRequest) {
+		    // code for IE7+, Firefox, Chrome, Opera, Safari
+		    xmlhttp=new XMLHttpRequest();
+		  } else { // code for IE6, IE5
+		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  xmlhttp.onreadystatechange=function() {
+		    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		      document.getElementById("deleteMeta").innerHTML=xmlhttp.responseText;
+		    }
+		  }
+		 xmlhttp.open("GET","ajax/deleteMeta.php?suppr=1&&id="+id,true);
+		 xmlhttp.send();
+	}
+	
+	function updateMeta() {
+		params="title="+document.getElementById("title").value; 
+		params+="&&creator="+document.getElementById("creator").value;
+		params+="&&subject="+document.getElementById("subject").value;
+		params+="&&description="+document.getElementById("description").value;
+		params+="&&publisher="+document.getElementById("publisher").value;
+		params+="&&contributor="+document.getElementById("contributor").value;
+		params+="&&date="+document.getElementById("date").value;
+		params+="&&type="+document.getElementById("type").value;
+		params+="&&format="+document.getElementById("format").value;
+		params+="&&identifier="+document.getElementById("identifier").value;
+		params+="&&source="+document.getElementById("source").value;
+		params+="&&language="+document.getElementById("language").value;
+		params+="&&relation="+document.getElementById("relation").value;
+		params+="&&coverage="+document.getElementById("coverage").value;
+		params+="&&rights="+document.getElementById("rights").value;
+		params+="&&id="+document.getElementById("id").value;
+		  if (window.XMLHttpRequest) {
+		    // code for IE7+, Firefox, Chrome, Opera, Safari
+		    xmlhttp=new XMLHttpRequest();
+		  } else { // code for IE6, IE5
+		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+		  xmlhttp.onreadystatechange=function() {
+		    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		      document.getElementById("modifMeta").innerHTML=xmlhttp.responseText;
+		    }
+		  }
+		
+		 xmlhttp.open("GET","../php/ajax/modifmeta.php?modif=1&&"+params,true);
+		 xmlhttp.send();
+		}
+ </script>
 
 

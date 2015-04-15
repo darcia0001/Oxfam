@@ -20,5 +20,19 @@ class Themes {
 	 * @AssociationKind Aggregation
 	 */
 	public $unnamed_ActiviteB_;
+
+	//getters et setters
+
+	public function setLibelle($libelle){
+		$this->$libelle = $libelle;
+	}
+
+	public function getLibelle(){
+		return $this->$libelle;
+	}
+	//constructeur
+	public function __construct($libelle){
+		$this-> $libelle = $libelle;
+	}
 }
 ?>

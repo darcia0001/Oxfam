@@ -31,7 +31,7 @@ class LigneBudget {
 	/**
 	 * @AssociationType M_Budget.ElementPlanMensuel
 	 */
-	public $_;
+	public $mois;
 
 	//constructeur
 	public function __construct($libelle, $montantPrevu, $montantExecute){

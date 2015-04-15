@@ -49,5 +49,12 @@ class Mois {
 	public function getLibelle(){
 		return $this->$libelle;
 	}
+	
+	public function setEtat($etat){
+		$this->$etat = $etat;
+	}
+	public function getEtat(){
+		return $this->$etat;
+	}
 }
 ?>
