@@ -152,7 +152,7 @@ class Manageur2{
 
 		 return $tab;
 	}
-
+}
 	
 //
 ?>
