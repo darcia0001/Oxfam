@@ -152,6 +152,22 @@ class ManageurBudget{
 
 		 return $tab;
 	}
+	//cette méthode permet de récuperer la liste des thèmes dans la base de données
+	//Elle est utile dans l'ajoute d'une opération
+	public function getListeThemes(){
+		$query = 'SELECT id , libelle  FROM  Themes t'; //on peut aussi passer par la classe BudgetProjet pour selecter la listeTheme
+		$parse = oci_parse($this->getPDO(), $query);
+		$execute = oci_execute($request);
+		return $execute;
+	}  
+
+	//Cette méthode permet de récuperer dans la base de données la liste des ligne budgetaires
+	public function getListLigneBudgetaire(){
+		$query = 'SELECT id, libelle FROM  LigneBudget l'; 
+		$parse = oci_parse($this->getPDO(), $query);
+		$execute = oci_execute($request);
+		return $execute;
+	}
 }
 	
 //
