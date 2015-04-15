@@ -34,7 +34,7 @@ class AnneeComptable {
 		$this->$code = $code;
 		$this->$libelle = $libelle;
 		$this->$etat  =$etat;
-		$this->unnamed_Mois_ = new Mois[12];
+		$this->unnamed_Mois_ = array(12);
 		//$this->unnamed_Mois_ = new Mois($code, $libelle, $etat);
 	}
 
