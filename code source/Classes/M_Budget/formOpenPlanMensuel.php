@@ -175,7 +175,7 @@
 	//chargeons la classe de la base des donnees
  	require('../Manageur/ManageurBudget.php');
 
-	$bdd = Manageur2::getInstance();
+	$bdd = ManageurBudget::getInstance();
  //on teste d'abord si tous les champs ont ete saisis
  if (isset($_POST['codeMois']) and isset($_POST['libelleMois']) ){
  	$codeMois = $_POST['codeMois'];
