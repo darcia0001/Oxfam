@@ -9,7 +9,7 @@
 	require_once(realpath(dirname(__FILE__)) . "/../M_Budget/AnneeComptable.php");
 	require_once(realpath(dirname(__FILE__)) . "/../M_Budget/ActiviteB.php");
 
-class Manageur2{
+class ManageurBudget{
 	/**
 	* Instance de la classe PDO
 	*
@@ -72,7 +72,7 @@ class Manageur2{
 	* @access public
 	* @static
 	* @param void
-	* @return Manageur2 $instance
+	* @return ManageurBudget $instance
 	*/public static function getInstance(){
             if(is_null(self::$instance)){
             self::$instance = new ManageurBudget();
