@@ -9,7 +9,6 @@ if (!isset($_SESSION['utilisateur'])){
 }
 
 	$user =  unserialize($_SESSION['utilisateur']);
-	
 
 // --------------------------------------------------------------------------------
 ?>
@@ -26,57 +25,37 @@ if (!isset($_SESSION['utilisateur'])){
 		<script type="text/javascript" src="assets/js/jquery.js"></script>
 		<script type="text/javascript" src="assets/js/js.js"></script>
 		<script type="text/javascript" src="assets/js/tab.js"></script>
+		<!-- Bootstrap Core CSS -->
+    	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="ressources/css/ourstyle.css">
 	</head>
 	<body style="padding-left: 60px; padding-right: 60px;">
-		<div class="width80">
-			<div class="col_12">
-				<img class="col_2" src="assets/img/logo.png" />
-				<p class="col_2">
-					OXFAM
-				</p>
-				<img class="col_2" src="assets/img/logo.png" />
-				<div class="col_4">
-					<span class="col_12">Bienvenue à  </span><span class="col_12"><span class="col_6">Prenom </span><span class="col_6">NOM </span></span><span class="col_12">Nom du projet / Pays</span>
-					<span class="col_12">
-						<select>
-							<option value="">-- Choix langue --</option>
-							<option value="">Français</option>
-							<option value="">Anglais</option>
-						</select> </span>
-				</div>
-				<div class="col_2">
-					<button class="small vert pill fright  icon-signout" type="submit">
-						Quitter
-					</button>
-				</div>
-			</div>
-			<ul class="breadcrumbs col_6">
-				<li>
-					<a href="">Home</a>
-				</li>
-				<li>
-					<a href="">Module</a>
-				</li>
-				<li>
-					<a href="">Sous Module</a>
-				</li>
-			</ul>
-			<p class="col_6 fright txtalignright">
-				jj/mm/yy hh:mm
-			</p>
+		
+			<?php  include("header.php");?>
+			<div class="width80">
 			<img class="col_12 sparatorh2" src="assets/img/separateur.png" />
 			<div class="col_6">
 				<span class="col_6 icon-dashboard fsize45"></span>
 				<div class="col_6">
 					<br />
-					<span>Accueil Agent<?php echo $user->getProfil();?></span>
+					<span>Accueil Agent:<?php echo $user->getProfil();?></span>
 				</div>
 			</div>
-			<div class="col_4 fright txtalignright">
-				
-			</div>
-			<div class="col_12 bar">
-				
+			
+			<div class="col_12 ">
+				<a href="M_utilisateur/profile.php"        title="Supprimer"  type="button"  class="btn btn-success btn-circle" >    
+				Profile
+                <i class="fa fa-edit"></i>
+                </a>
+                
+                <a href="M_suivi_caisse/gereroperation.php"        title="Supprimer"  type="button"  class="btn btn-success btn-circle" >    
+				Gestion Operations
+                <i class="fa fa-edit"></i>
+                </a>
+                <a href="M_suivi_caisse/ajouteroperation.php"        title="Supprimer"  type="button"  class="btn btn-success btn-circle" >    
+				Ajouter Operation
+                <i class="fa fa-edit"></i>
+                </a>
 			</div>
 		</div>
 	</body>

@@ -2,14 +2,18 @@
     require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurBD.php');
     $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de donnees
       // ---------------------------- gestion de la securité -------------------------
-        session_start();
-    
-      if (!isset($_SESSION['utilisateur'])){
-    
-        header('Location:  connexion.php');
-        exit();
-      }
-    // --------------------------------------------------------------------------------
+    session_start();
+  if (!isset($_SESSION['utilisateur'])){
+  
+    header('Location:  connexion.php');exit();
+  }
+    //redirection suivant le profil de l utilisateur
+    if (isset($_SESSION['utilisateur'])){
+	 $user =  unserialize($_SESSION['utilisateur']);
+	   
+	   
+  }
+// --------------------------------------------------------------------------------
       $_user=unserialize($_SESSION['utilisateur']);
       if( isset($_REQUEST["modification"])){
     
@@ -24,7 +28,11 @@
         if(isset($_REQUEST["password"] )){
             $mdp=$_REQUEST["password"];
     
-            $_user->setPassword(sha1($mdp));
+	        if($mdp==$_user->getPassword()){
+				$_user->setPassword($mdp);
+			}else{//nouveau mdp
+				$_user->setPassword(sha1($mdp));
+			}
         }
         if(isset($_REQUEST["profil"] )){
             $_user->setProfil($_REQUEST["profil"]);
@@ -111,61 +119,11 @@
                 src="../assets/js/jquery.i18n.properties-min-1.0.9.js"></script>
         <script type="text/javascript"
                 src="../assets/js/translate_deletUser.js"></script>
+                <link rel="stylesheet" type="text/css" href="../ressources/css/ourstyle.css">
 
     </head>
     <body style="padding-left: 60px; padding-right: 60px;">
-        <div class="width80">
-            <div class="col_12">
-                <img class="col_2"
-                     src="assets/img/logo.png"
-                     alt="Logo" />
-                <p class="col_2">
-					OXFAM
-                </p>
-                <img class="col_2"
-                     src="assets/img/logo.png"
-                     alt="Logo" />
-                <div class="col_4">
-                    <span class="col_12"
-                          id="msg_welcome">Bienvenue à </span>
-                    <span class="col_12">
-                        <span class="col_6">Prenom </span>
-                        <span class="col_6">NOM </span>
-                    </span>
-                    <span class="col_12">Nom du projet / Pays</span>
-                    <span class="col_12">
-                        <select id="lang">
-                            <option value="browser">-- Choix langue --</option>
-                            <option value="fr">Français</option>
-                            <option value="en">Anglais</option>
-                        </select>
-                    </span>
-                </div>
-                <div class="col_2">
-                    <button class="small vert pill fright  icon-signout"
-                            type="submit"
-                            id="btn_quit">
-						Quitter
-                    </button>
-                </div>
-            </div>
-            <ul class="breadcrumbs col_6">
-                <li>
-                    <a href=""
-                       id="lnk_accueil">Accueil</a>
-                </li>
-                <li>
-                    <a href=""
-                       id="lnk_module">Module</a>
-                </li>
-                <li>
-                    <a href=""
-                       id="lnk_smodule">Sous-Module</a>
-                </li>
-            </ul>
-            <p class="col_6 fright txtalignright">
-				jj/mm/yy hh:mm
-            </p>
+        <?php  include("header.php");?>
             <img class="col_12 sparatorh2"
                  src="../assets/img/separateur.png" />
             <div class="row">
@@ -203,10 +161,10 @@
                                         required="">
                                     <option class="opt_agOxf"
                                             value="agentoxfam"
-                                            <?php echo $profil1; ?>>Agent oxfam</option>
+                                             >Agent oxfam</option>
                                     <option value="agentprojet"
                                             class="opt_agProj"
-                                            <?php echo $profil2; ?>>Agent projet</option>
+                                             >Agent projet</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -236,7 +194,7 @@
                                        type="password"
                                        class="form-control"
                                        placeholder="Entrer le mot de passe à nouveau"
-                                       value="<?php echp $_user->getPassword(); ?>">
+                                       value="<?php echo $_user->getPassword(); ?>">
                             </div>
                             <!-- id d l utilisateur a modifier -->
                             <div class="form-group"

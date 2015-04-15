@@ -1,7 +1,7 @@
 <?php
 
 	//chargeons la classes de la base des donnees
- 	require('../Manageur/ManageurBudget.php');
+ 	require('../../Classes/Manageur/Manageur2.php');
 
 	$bdd = Manageur2::getInstance();
  //on teste d'abord si tous les champs ont ete saisis
@@ -25,23 +25,27 @@
  else
  	echo "verifier que vous tous les champs ont ete bien saisis<br/>";
 
- echo "codeM: ".$codeMois." libelleMois: ".$libelleMois."<br/>
- 	   lib elmt plan mens: ".$libelleElementPlanMensuel." mont : ".$montantElementPlanMensuel."<br/>
- 	   lib ligne budget: ".$libelleLigneBudget." mont prev: ".$montantPrevuLigneBudget." mnt exec: ".$mntExec;
+ echo "<strong> code Mois </strong>: ".$codeMois." <strong>libelle mois</strong>: ".$libelleMois."<br/>
+ 	   <strong>lib elmt plan mensuel</strong>: ".$libelleElementPlanMensuel.
+ 	   "<br/><strong>montant</strong> : ".$montantElementPlanMensuel."<br/>
+ 	   <br/><strong>lib ligne budget:</strong> ".$libelleLigneBudget.
+ 	   "<br/><strong> mont prev:</strong> ".$montantPrevuLigneBudget.
+ 	   "<br/> <strong>montant exec</strong>: ".$mntExec;
 
  	   	$mois = new Mois($codeMois, $libelleMois);
  	   	$epm = new ElementPlanMensuel($codeMois, $libelleElementPlanMensuel, $montantElementPlanMensuel);
  	   	$lbd = new LigneBudget($libelleLigneBudget, $montantPrevuLigneBudget, $mntExec);
 
- 	   	echo "ajout mois<br/>";
+ 	   	echo "<br/> <strong>ajout mois</strong><br/>";
  		$bdd->addMois($mois);
  		
- 		echo "ajout elmnt plan mensuel<br/>";
+ 		echo "<br/><strong>ajout elmnt plan mensuel</strong><br/>";
  		$bdd->addEltPlanMensuel($epm);
  		
- 		echo "ajout ligne budgetaire <br/>";
+ 		echo "<br><strong>ajout ligne budgetaire </strong><br/>";
  		$bdd->addLigneBudget($lbd);
 
- 		echo "tout fait <br/>";
+ 		echo "<br/><strong>tout fait <strong> <br/>";
  //echo "here";
 ?>
+<p> <a href = "formOpenPlanMensuel.php"/> Nouvel formulaire </p>  

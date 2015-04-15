@@ -31,44 +31,47 @@ class ActiviteB {
 	 * @AssociationType M_Budget.LigneBudget
 	 * @AssociationKind Composition
 	 */
-	public $unnamed_LigneBudget_;
+	public $unnamed_LigneBudget_ = array();
 
 	//constructeur
 	public function __construct($libelle, $dateDebut, $dateFin, $montantPrevu){
-		$this->$libelle = $libelle;
-		$this->$dateDebut = $dateDebut;
-		$this->$dateFin = $dateFin;
-		$this->$montantPrevu = $montantPrevu;
-		$this->$unnamed_LigneBudget_ = new LigneBudget($libelle, $montantPrevu);
+		$this->libelle = $libelle;
+		$this->dateDebut = $dateDebut;
+		$this->dateFin = $dateFin;
+		$this->montantPrevu = $montantPrevu;
+		//$this->unnamed_LigneBudget_ = new LigneBudget($libelle, $montantPrevu);
 	}
+
+   //functions et methodes
+	
 
 	//getters et setters
 	public function setLibelle($libelle){
-		$this->$libelle = $libelle;
+		$this->libelle = $libelle;
 	}
 	public function getLibelle(){
-		return  $this->$libelle;
+		return  $this->libelle;
 	}
 
 	public function setDateDebut($date){
-		$this->$dateDebut = $date;
+		$this->dateDebut = $date;
 	}
 	public function getDateDebut(){
-		return $this->$dateDebut;
+		return $this->dateDebut;
 	}
 
 	public function setDateFin($date){
-		$this->$dateFin = $date;
+		$this->dateFin = $date;
 	}
 	public function getDateFin(){
-		return $this->$dateFin;
+		return $this->dateFin;
 	}
 
 	public function setMontantPrevu($montant){
-		$this->$montantPrevu = $montant;
+		$this->montantPrevu = $montant;
 	}
 	public function getMontantPrevu(){
-		return $this->$montantPrevu;
+		return $this->montantPrevu;
 	}
 
 

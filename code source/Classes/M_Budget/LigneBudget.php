@@ -1,6 +1,6 @@
 <?php
 require_once(realpath(dirname(__FILE__)) . '/../M_Budget/ActiviteB.php');
-require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/Operation.php');
+//require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/Operation.php');
 require_once(realpath(dirname(__FILE__)) . '/../M_Budget/ElementPlanMensuel.php');
 
 /**
@@ -31,31 +31,32 @@ class LigneBudget {
 	/**
 	 * @AssociationType M_Budget.ElementPlanMensuel
 	 */
-	public $mois;
+	public $_;
 
 	//constructeur
 	public function __construct($libelle, $montantPrevu, $montantExecute){
-		$this->$libelle = $libelle;
-		$this->$montantExecute = $montantExecute;
+		$this->libelle = $libelle;
+		$this->montantExecute = $montantExecute;
 		$this -> $montantPrevu = $montantPrevu;
+		$this -> $montantExecute = $montantExecute;
 
 	}
 
 	//geters et setters
 	public function setLibelle($libelle){
-		$this->$libelle = $libelle;
+		$this->libelle = $libelle;
 	}
 
 	public function getLibelle(){
-		return $this->$libelle;
+		return $this->libelle;
 	}
 
 	public function setMontantPrevu($montant){
-		$this->$montantPrevu = $montant;
+		$this->montantPrevu = $montant;
 	}
 
 	public function getMontantPrevu(){
-		return $this->$montantPrevu;
+		return $this->montantPrevu;
 	}
 
 	public function setMontantExceute($montant){

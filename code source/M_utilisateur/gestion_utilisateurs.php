@@ -39,6 +39,9 @@ $manageur=ManageurUtilisateur::getInstance();//gerer tous rapport objet/base de 
     	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     	<!-- Bootstrap Core JavaScript -->
     <script src="../assets/js/bootstrap.min.js"></script>
+    <!-- DataTables CSS -->
+<link href="../assets/css/plugins/dataTables.bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../ressources/css/ourstyle.css">
     <script>
     
      $(document).ready(function() {   
@@ -233,71 +236,62 @@ function modifyUser() {
  </script>	
 	</head>
 	<body style="padding-left: 60px; padding-right: 60px;">
-		<div class="width80">
-			<div class="col_12">
-				<img class="col_2" src="../assets/img/logo.png" />
-				<p class="col_2">
-					OXFAM
-				</p>
-				<img class="col_2" src="../assets/img/logo.png" />
-				<div class="col_4">
-					<span class="col_12">Bienvenue à </span><span class="col_12"><span class="col_6">Prenom </span><span class="col_6">NOM </span></span><span class="col_12">Nom du projet / Pays</span>
-					<span class="col_12">
-						<select>
-							<option value="">-- Choix langue --</option>
-							<option value="">Français</option>
-							<option value="">Anglais</option>
-						</select> </span>
-				</div>
-				<div class="col_2">
-					<a href="deconnexion.php">
-					<button class="small vert pill fright  icon-signout" type="submit">
-						Quitter
-					</button>
-					</a>
-				</div>
-			</div>
-			<ul class="breadcrumbs col_6">
-				<li>
-					<a href="">Home</a>
-				</li>
-				<li>
-					<a href="">Module</a>
-				</li>
-				<li>
-					<a href="">Sous Module</a>
-				</li>
-			</ul>
-			<p class="col_6 fright txtalignright">
-				jj/mm/yy hh:mm
-			</p>
+			<?php  include("header.php");?>
 			<img class="col_12 sparatorh2" src="../assets/img/separateur.png" />
 			<div class="col_6">
 				<span class="col_6 icon-dashboard fsize45"></span>
 				<div class="col_6">
 					<br />
-					<span>Gestion Utilisateurs</span>
+					<span style="font-size:2em;">Gestion Utilisateurs</span>
 				</div>
 			</div>
 			<div class="col_6">
-			<a href="#" title="ajouter"  onclick="addUser();" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
-			<a href="#" title="Modifier"  onclick="modifyUser();" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
-			<a href="#" title="Supprimer"  onclick="deleteUser();" type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#modifyUser"><i class="fa fa-edit"></i></a>
-			
+			<a href="#"
+                   id="btn_add"
+                   title="ajouter"
+                   onclick="addUser();"
+                   type="button"
+                   class="btn btn-success btn-circle"
+                   data-toggle="modal"
+                   data-target="#modifyUser">
+                    Ajouter
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#"
+                   title="Modifier"
+                   id="btn_edit"
+                   onclick="modifyUser();"
+                   type="button"
+                   class="btn btn-success btn-circle"
+                   data-toggle="modal"
+                   data-target="#modifyUser">
+                    Modifier
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#"
+                   title="Supprimer"
+                   id="btn_del"
+                   onclick="deleteUser();"
+                   type="button"
+                   class="btn btn-success btn-circle"
+                   data-toggle="modal"
+                   data-target="#modifyUser">
+                    Supprimer
+                    <i class="fa fa-edit"></i>
+                </a>
 			</div>
 			<div class="col_4 fright txtalignright">
-				<div class="notice error">
-					<i class="icon-remove-sign icon-large"></i>Alerte Opération / Dépassement <a href="#close"class="icon-remove"></a>
-				</div>
+				
 			</div>
-			<table class="sortable striped col_11 " cellpadding="0" cellspacing="0" id="userTable">
-					<caption>
-						<h1 class="bloc100  blue_menu"> Liste des Groupes d 'utilisateurs</h6>
+			<div class="table-responsive">
+			<table  class="table table-striped table-bordered table-hover  " cellpadding="0" cellspacing="0" id="userTable">
+					<caption >
+						<h1 class="    "> Liste des utilisateurs</h1>
 					</caption>
-                                    <thead>
+                                    <thead >
                                         <tr>
                                         	<th><input onchange="checkall(this)" type="checkbox" /> </th>
-                                            <th width="20%">Prenom </th>
+                                            <th style="width:20%" >Prenom </th>
 											<th width="10%">Nom </th>
 											<th width="20%">Email </th>
 											<th width="20%">Profil </th>
@@ -333,30 +327,8 @@ function modifyUser() {
                                        
                                     </tbody>
                                 </table>
-			<div class="col_12 bar">
-				<a href="#" onclick="masquerTab('bq1',document.getElementById('opbq1').value,'opbq1');"> <span class="col_1 icon-arrow-down fsize30 sourismain"></span></a>
-			<!-- ok -->
-				<br />
-				<img class="col_12" src="../assets/img/separateur.png" height="4" />
-				<br />
-				
-				<input type="hidden" name="opbq1" id="opbq1" value="mask" />
-				<input type="hidden" name="opbq2" id="opbq2" value="mask" />
-				<div class="col_12 ">
-					<div class="col_4 ">
-						<p class="col_6">
-							<span class="icon-download fsize45"></span>
-							<br />
-							<span>Générer Etat</span>
-						</p>
-						<p class="col_6">
-							<span class="icon-print fsize45"></span>
-							<br />
-							<span>Imprimer Opération </span>
-						</p>
-					</div>
-				</div>
 			</div>
+			
 		</div>
 <footer>
 		<hr />
@@ -365,8 +337,8 @@ function modifyUser() {
 		</div>
 		<hr / class="ligne_rouge">
 </footer>
-	</body>
-<!-- MODAL POUR LA MODIFICATION D'UN UTILISATEUR -->
+</body>
+<!-- MODAL POUR LA MODIFICATION/AJOUT D'UN UTILISATEUR -->
     <div class="modal fade" id="modifyUser" tabindex="-1" role="dialog" aria-labelledby="modifyUser" aria-hidden="true">
       <div class="modal-dialog modal-lg" id='modifUser'>
         

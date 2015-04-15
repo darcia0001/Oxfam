@@ -1,7 +1,25 @@
 <?php 
 	require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurProjet.php');
 	$manageur=ManageurProjet::getInstance();//gerer tous rapport objet/base de donneeq
-
+	// ---------------------------- gestion de la securité -------------------------
+	session_start();
+	if (!isset($_SESSION['utilisateur'])){
+	
+		header('Location:  connexion.php');exit();
+	}
+	//redirection suivant le profil de l utilisateur
+	if (isset($_SESSION['utilisateur'])){
+		$user =  unserialize($_SESSION['utilisateur']);
+		if (($user->getProfil())=='agentprojet'){//si c est un agent projet on le redirige
+			header("Location: ../accueil.php");exit();
+	
+		}
+		// 	   if (($user->getProfil()=='agentoxfam')&&($user->getGroupeUtilisateur()!="administrateur")){//si c est un agent oxfam non administrateur on le redirige
+		// 	   		header("Location: ../accueil.php");exit();
+		 
+		// 	   }
+	}
+	// --------------------------------------------------------------------------------
 	if (isset($_REQUEST["nomProjet"])){
 		$leProjet= $manageur->getProjet($_REQUEST["nomProjet"]);
 	}

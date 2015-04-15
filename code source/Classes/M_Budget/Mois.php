@@ -29,25 +29,33 @@ class Mois {
 	 */
 	public $unnamed_PlanMensuel_;
 	//constructor
-	public function __construct($code, $libelle, $etat){
-		$this->$code = $code;
-		$this->$libelle = $libelle;
-		$this->$etat  =$etat;
+	public function __construct($code, $libelle){
+		$this->code = $code;
+		$this->libelle = $libelle;
+		$this->setEtat("ouvert");
 	}
 
 	///getters et setters
 	public function setCode($code){
-		$this->$code = $code;
+		$this->code = $code;
 	}
 	public function getCode(){
-		return $this->$code;
+		return $this->code;
 	}
 
 	public function setLibelle($libelle){
-		$this->$libelle = $libelle;
+		$this->libelle = $libelle;
 	}
 	public function getLibelle(){
-		return $this->$libelle;
+		return $this->libelle;
+	}
+
+	public function setEtat($etat){
+		$this->etat = $etat;
+	}
+
+	public function getEtat(){
+		return $this->etat;
 	}
 }
 ?>

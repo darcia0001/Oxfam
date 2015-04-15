@@ -1,6 +1,6 @@
 <?php
 require_once(realpath(dirname(__FILE__)) . '/../M_Budget/PlanAnnuel.php');
-require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/Operation.php');
+//require_once(realpath(dirname(__FILE__)) . '/../M_SuiviCaisse/Operation.php');
 require_once(realpath(dirname(__FILE__)) . '/../M_Budget/Mois.php');
 require_once(realpath(dirname(__FILE__)) . '/../M_Budget/ElementPlanMensuel.php');
 
@@ -28,7 +28,7 @@ class PlanMensuel {
 	/**
 	 * @AssociationType M_Budget.Mois
 	 */
-	public $mois;
+	public $_;
 	/**
 	 * @AssociationType M_Budget.ElementPlanMensuel
 	 * @AssociationKind Composition
@@ -36,28 +36,31 @@ class PlanMensuel {
 	public $unnamed_ElementPlanMensuel_;
 
 	//constructors
+	/*public function __construct($code, $libelle){
+		$this->code =$code;
+		$this->libelle = $libelle;
+	}
+	*/
 	public function __construct($code, $libelle, $montant){
-		$this->$code =$code;
-		$this->$libelle = $libelle;
-		$this->$unnamed_ElementPlanMensuel_ = new ElementPlanMensuel($code, $libelle, $montant);
-		$mois = new Mois();
-
+		$this->code =$code;
+		$this->libelle = $libelle;
+		$this->unnamed_ElementPlanMensuel_ = new ElementPlanMensuel($code, $libelle, $montant);
 	}
 
 	//getters et setters
 	public function setCode($code){
-		$this->$code = $code;
+		$this->code = $code;
 	}
 
 	public function getCode(){
-		return $this->$code;
+		return $this->code;
 	}
 	public function setLibelle($libelle){
-		$this->$libelle = $libelle;
+		$this->libelle = $libelle;
 	}
 
 	public function getLibelle(){
-		return $this->$libelle;
+		return $this->libelle;
 	}
 }
 ?>

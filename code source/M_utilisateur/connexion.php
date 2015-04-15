@@ -33,13 +33,14 @@ $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
             	if (!isset($_REQUEST['email'])) //On est dans la page de connexion et pas encor connecte
                  {
                  echo '
-                <form>
+                <form method="post">
                 <input name="email" class="col_12" type="text" placeholder="login" required=""/>
                 <input name="password" class="col_12" type="password" placeholder="mot de passe" required="" />
                 <br />
                 <button class="small red pill fright  icon-circle-arrow-right" type="submit">
                     Connexion</button>
                 </form>
+				<a href="lostpassword.php">mot de passe oublie?</a>
 				';
                } 
                //sinon traitemen du demande de connexion
@@ -54,9 +55,10 @@ $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
                				$_SESSION['utilisateur'] = serialize($user);
                				//redirection suivant le profil de l utilisateur connecte
                				if($user->getProfil()=="agentprojet"){
+               					
                					header('Location:../accueil.php');exit();
                				}
-               				if($user->getProfil()=="agentoxfam"){
+               				else if($user->getProfil()=="agentoxfam"){
                					if($user->getGroupeUtilisateur()=="administrateur"){
                						header('Location:../accueilAdmin.php');exit();
                					}
@@ -69,6 +71,7 @@ $manageur=ManageurUtilisateur::getInstance();//gerer les objets utilisateur
                					//message d erreur
                					
                				}
+               				
                			}
                			else{//erreur 
                				//on doit refaire le log

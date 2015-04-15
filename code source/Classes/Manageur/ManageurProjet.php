@@ -86,10 +86,11 @@
         /*methodes de manipulation des projets */
 		
 		public function addProjet(Projet $projet){
-
+			echo var_dump($projet);
             $this->requete =  oci_parse($this->connexion,
                                             "
-											INSERT INTO projet values ('".$projet->getNom()."',
+											INSERT INTO projet(nom,secteur,categorie,villeprojet) values ('".$projet->getNom()."',
+            								
 											(select ref(s) from secteuractivite s where s.libelle like '".$projet->getSecteur()."'),	
 											(select ref(c) from categorieprojet c where c.libelle like '".$projet->getCategorie()."') ,
 											(select ref(v) from ville v where v.nomVille like '".$projet->getVilleProjet()."') )
@@ -128,9 +129,9 @@
 			$prjt= new Projet();
 			
 			$this->requete =  oci_parse($this->connexion,
-                                            "select nom, deref(secteur).libelle secteur, 
-												deref(categorie).libelle categorie,
-												deref(villeprojet).nomville nom_ville 
+                                            "select nom, deref(secteur).libelle as secteur, 
+												deref(categorie).libelle as categorie,
+												deref(villeprojet).nomville as nom_ville 
 												from projet where nom like '".$nomProjet."' 
 											"
 										);
@@ -141,9 +142,9 @@
 				$prjt->setNom($row["NOM"]);
 				$prjt->setVilleProjet($row["NOM_VILLE"]);
 				$prjt->setCategorie($row["CATEGORIE"]);
-				$prjt->setSecteur($row["SECTEUR"]);
+				$prjt->setSecteur($row["secteur"]);
 			}
-			
+			print_r($prjt);
 			return $prjt;
 		}
 		
@@ -218,7 +219,7 @@
             while ($row = oci_fetch_array($this->requete, OCI_BOTH)) {
                 $listeVilles[]= $row["NOMVILLE"];                    
             }
-
+			//print_r( $listeVilles);
             return $listeVilles;
         }
 		

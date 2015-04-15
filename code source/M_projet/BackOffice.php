@@ -2,26 +2,32 @@
 	require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurProjet.php');
 	$manageur=ManageurProjet::getInstance();
 
-	//gerer tous rapport objet/base de donneeq
-	/*  // ---------------------------- gestion de la sécurité -------------------------
-		session_start();
-
-	  if (!isset($_SESSION['user'])){
-		//regarde pour l instant on en fait fie d etre co
-		//header('Location:  connexion.php');
-	  }
-		if (isset($_SESSION['user'])){
-		 $user =  unserialize($_SESSION['user']);
-		   if (($user->getProfil())!='administrateur')
-				header("Location: ../".$user->getProfil());
-	  }
-	// -------------------------------------------------------------------------------- */
+// ---------------------------- gestion de la securit� -------------------------
+    session_start();
+  if (!isset($_SESSION['utilisateur'])){
+  
+    header('Location:  connexion.php');exit();
+  }
+    //redirection suivant le profil de l utilisateur
+    if (isset($_SESSION['utilisateur'])){
+	 $user =  unserialize($_SESSION['utilisateur']);
+	   if (($user->getProfil())=='agentprojet'){//si c est un agent projet on le redirige
+	   	header("Location: ../accueil.php");exit();
+	   	 
+	   }
+// 	   if (($user->getProfil()=='agentoxfam')&&($user->getGroupeUtilisateur()!="administrateur")){//si c est un agent oxfam non administrateur on le redirige
+// 	   		header("Location: ../accueil.php");exit();
+	   		 
+// 	   }
+  }
+// --------------------------------------------------------------------------------
 ?>
 <html>
 <head>
     <title>BackOffice</title>
 	<meta charset="UTF-8">
-	
+	<link rel="stylesheet" type="text/css" href="../assets/css/style.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="../assets/style.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../ressources/css/ourstyle.css">
     <link href="../ressources/css/bootstrap.min.css" rel="stylesheet">
 	    <link href="../ressources/font-awesome-4.1.0/css/font-awesome.css" rel="stylesheet">
@@ -107,7 +113,7 @@
 			  $projet->setCategorie($_REQUEST["categorie"]);
 			}
 			if (isset($_REQUEST["secteurActivite"])){
-			  $projet->setSecteur($_REQUEST["categorie"]);
+			  $projet->setSecteur($_REQUEST["secteurActivite"]);
 			}
 
 			$manageur->addProjet($projet);
@@ -133,8 +139,7 @@
 				
 			</div>
 		</div>
-	</div>
-		
+	</div>	
     
     <script src="../ressources/js/jquery.mobile-1.4.5.js"></script>
 </body>

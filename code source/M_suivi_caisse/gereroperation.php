@@ -1,6 +1,29 @@
+<?php
+require_once(realpath(dirname(__FILE__)) . '/../classes/Manageur/ManageurProjet.php');
+$manageur=ManageurProjet::getInstance();
+ // ---------------------------- gestion de la securit� -------------------------
+    session_start();
+  if (!isset($_SESSION['utilisateur'])){
+  
+    header('Location:  connexion.php');exit();
+  }
+    //redirection suivant le profil de l utilisateur
+    if (isset($_SESSION['utilisateur'])){
+	 $user =  unserialize($_SESSION['utilisateur']);
+// 	   if (($user->getProfil())=='agentprojet'){//si c est un agent projet on le redirige
+// 	   	header("Location: ../accueil.php");exit();
+	   	 
+// 	   }
+// 	   if (($user->getProfil()=='agentoxfam')&&($user->getGroupeUtilisateur()!="administrateur")){//si c est un agent oxfam non administrateur on le redirige
+// 	   		header("Location: ../accueil.php");exit();
+	   		 
+// 	   }
+  }
+// --------------------------------------------------------------------------------
+  ?>
 <!DOCTYPE html>
 <html><head>
-<title>OxFam| Connexion</title>
+<title>OxFam| Gestion Operations</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="" />
@@ -24,6 +47,7 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/js.js"></script>          
 <script type="text/javascript" src="js/tab.js"></script>  
+<link rel="stylesheet" type="text/css" href="../ressources/css/ourstyle.css">
 </head>
 <body style="padding-left: 60px;padding-right: 60px;">
 
@@ -32,33 +56,11 @@
         
     
 
-<div class="width80"   >
-		    <div class="col_12"  > <!-- Entête de la page -->
-		          <img  class="col_2" src="img/logo.png" />
-		          <p class="col_2">OXFAM</p>
-		          <img  class="col_2" src="img/logo.png" />
-		          
-			      <div class="col_4">
-			          <span class="col_12">Bienvenue à </span>
-			          <span class="col_12"> 
-			             <span class="col_6">Prenom </span>
-			             <span class="col_6">NOM </span>
-			          </span>
-			          <span class="col_12">Nom du projet / Pays</span>
-			          <span class="col_12">
-				          <select  >
-					          <option value="">-- Choix langue  --</option>
-					          <option value="">Français</option>
-					          <option value="">Anglais</option>
-				          </select   >
-			           </span>
-			      </div>  
-			      
-			     <div class="col_2" >
-			        <button class="small vert pill fright  icon-signout" type="submit"> Quitter </button>
-			     </div>
-		    </div> <!-- Fin Entête -->
-		    
+
+		<?php  
+        include("header.php");
+    ?>
+		 <div class="width80"   >   
 		    <img  class="col_12 sparatorh2" src="img/separateur.png"  />
 		  	<ul class="breadcrumbs col_6"> <!-- Début Fil d'ariane -->
 				<li><a href="">Home</a></li>
@@ -117,7 +119,7 @@
 									                    </thead>
 									                    <tbody>
 									                       <?php
-															require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD.php');
+															require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD3.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
@@ -219,7 +221,7 @@
 									                    </thead>
 									                    <tbody>
 									                       <?php
-															require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD.php');
+															require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD3.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
@@ -286,7 +288,7 @@
 									                    </thead>
 									                    <tbody>
 									                       <?php
-															require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD.php');
+															require_once(realpath(dirname(__FILE__)) . '/../Classes/Manageur/ManageurBD3.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationBanque.php');
 															require_once(realpath(dirname(__FILE__)) . '/../Classes//M_SuiviCaisse/OperationCaisse.php');
 															$manageur=ManageurOperation::getInstance();
@@ -496,7 +498,6 @@ $(document).ready(function() {
     <script src="js/bootstrap.min.js"></script>
     
 	<script>
-	
 	function modifyMeta(id) {
 	  if (window.XMLHttpRequest) {
 	    // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -546,21 +547,15 @@ $(document).ready(function() {
 	}
 	
 	function updateMeta() {
-		params="title="+document.getElementById("title").value; 
-		params+="&&creator="+document.getElementById("creator").value;
-		params+="&&subject="+document.getElementById("subject").value;
-		params+="&&description="+document.getElementById("description").value;
-		params+="&&publisher="+document.getElementById("publisher").value;
-		params+="&&contributor="+document.getElementById("contributor").value;
-		params+="&&date="+document.getElementById("date").value;
-		params+="&&type="+document.getElementById("type").value;
-		params+="&&format="+document.getElementById("format").value;
-		params+="&&identifier="+document.getElementById("identifier").value;
-		params+="&&source="+document.getElementById("source").value;
-		params+="&&language="+document.getElementById("language").value;
-		params+="&&relation="+document.getElementById("relation").value;
-		params+="&&coverage="+document.getElementById("coverage").value;
-		params+="&&rights="+document.getElementById("rights").value;
+		//params="dateOperation="+document.getElementById("dateOperation").value; 
+		params="&&sommeOperation="+document.getElementById("sommeOperation").value;
+		params+="&&noteOperation="+document.getElementById("noteOperation").value;
+		params+="&&libelle="+document.getElementById("libelle").value;
+		params+="&&referencePaiement="+document.getElementById("referencePaiement").value;
+		params+="&&numRecu="+document.getElementById("numRecu").value;
+		params+="&&typeOpBancaire="+document.getElementById("typeOpBancaire").value;
+		params+="&&referenceOperation="+document.getElementById("referenceOperation").value;
+		params+="&&typeOperation="+document.getElementById("typeOperation").value;
 		params+="&&id="+document.getElementById("id").value;
 		  if (window.XMLHttpRequest) {
 		    // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -574,7 +569,7 @@ $(document).ready(function() {
 		    }
 		  }
 		
-		 xmlhttp.open("GET","../php/ajax/modifmeta.php?modif=1&&"+params,true);
+		 xmlhttp.open("GET","ajax/modifmeta.php?modif=1&&"+params,true);
 		 xmlhttp.send();
 		}
  </script>

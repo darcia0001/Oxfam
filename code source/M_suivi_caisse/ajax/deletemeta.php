@@ -1,6 +1,6 @@
 <?php
 
-require_once(realpath(dirname(__FILE__)) . '/../../Classes/Manageur/ManageurBD.php');
+require_once(realpath(dirname(__FILE__)) . '/../../Classes/Manageur/ManageurBD3.php');
 require_once(realpath(dirname(__FILE__)) . '/../../Classes/M_SuiviCaisse/OperationBanque.php');
 require_once(realpath(dirname(__FILE__)) . '/../../Classes/M_SuiviCaisse/OperationCaisse.php');
 

@@ -25,7 +25,8 @@ $manageur=ManageurProjet::getInstance();//gerer tous rapport objet/base de donne
 <html>
 <head>
     <title>BackOffice</title>
-
+	<link rel="stylesheet" type="text/css" href="../assets/css/style.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../assets/style.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../ressources/css/ourstyle.css">
     <!-- Bootstrap Core CSS -->
     <link href="../ressources/css/bootstrap.min.css" rel="stylesheet">
@@ -53,7 +54,7 @@ $manageur=ManageurProjet::getInstance();//gerer tous rapport objet/base de donne
 						<?php
 							
 							$lesVilles= $manageur->getListeVilles();
-							
+							echo var_dump($lesVilles);
 							foreach ($lesVilles as $val) {
 								echo "<option value=".$val.">".$val."</option>";
 							}

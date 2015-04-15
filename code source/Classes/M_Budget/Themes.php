@@ -8,6 +8,10 @@ require_once(realpath(dirname(__FILE__)) . '/../M_Budget/ActiviteB.php');
  */
 class Themes {
 	/**
+	* @AttributeType String
+	*/
+	private $code;
+	/**
 	 * @AttributeType String
 	 */
 	private $libelle;
@@ -24,12 +28,27 @@ class Themes {
 	//getters et setters
 
 	public function setLibelle($libelle){
-		$this->$libelle = $libelle;
+		$this->libelle = $libelle;
 	}
 
 	public function getLibelle(){
-		return $this->$libelle;
+		return $this->libelle;
 	}
+	
+	public function setActiviteB(ActiviteB $actB){
+		$this->unnamed_ActiviteB_ = $actB;
+	}
+
+	public function getActiviteB(){
+		return $this->unnamed_ActiviteB_;
+	}
+	public function setCode($code){
+		$this->code = $code;
+	}
+	public function getCode(){
+		return $this->code;
+	}
+
 	//constructeur
 	public function __construct($libelle){
 		$this-> $libelle = $libelle;

@@ -29,23 +29,23 @@ class ElementPlanMensuel {
 	public $unnamed_LigneBudget_;
 	//constructeur
 	public function __construct($code, $libelle, $montant){
-		$this->$code =$code;
-		$this->$libelle = $libelle;
+		$this->code =$code;
+		$this->libelle = $libelle;
 	}
 
 	///getters et setters
 	public function setCode($code){
-		$this->$code = $code;
+		$this->code = $code;
 	}
 	public function getCode(){
-		return $this->$code;
+		return $this->code;
 	}
 
 	public function setLibelle($libelle){
-		$this->$libelle = $libelle;
+		$this->libelle = $libelle;
 	}
 	public function getLibelle(){
-		return $this->$libelle;
+		return $this->libelle;
 	}
 
 	public function setMontant($montant){
@@ -53,7 +53,7 @@ class ElementPlanMensuel {
 	}
 
 	public function getMontant(){
-		return $this->$montant;
+		return $this->montant;
 	}
 }
 ?>

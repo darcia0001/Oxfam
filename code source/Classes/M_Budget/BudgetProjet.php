@@ -1,6 +1,6 @@
 <?php
 require_once(realpath(dirname(__FILE__)) . '/../M_Budget/PlanAnnuel.php');
-require_once(realpath(dirname(__FILE__)) . '/../M_Projets/Projet.php');
+//require_once(realpath(dirname(__FILE__)) . '/../M_Projets/Projet.php');
 require_once(realpath(dirname(__FILE__)) . '/../M_Budget/Themes.php');
 
 /**
@@ -31,21 +31,21 @@ class BudgetProjet {
 	/**
 	 * @AssociationType M_Projets.Projet
 	 */
-	public $_;
+	public $_projet = array();
 	/**
 	 * @AssociationType M_Budget.Themes
 	 * @AssociationKind Composition
 	 */
-	public $unnamed_Themes_;
+	public $unnamed_Themes_ = array();
 
 	//constructeur
 	public function __construct($montantDemande, $montantAttribue,
 				 $montantExecute, $libelle){
-		$this->$montantDemande = $montantDemande;
-		$this->$montantExecute = $montantExecute;
-		$this->$montantAttribue = $montantAttribue;
-		$this->$montantRestant = $montantDemande - $montantAttribue;
-		$this->$unnamed_Themes_ = new Themes($libelle);
+		$this->montantDemande = $montantDemande;
+		$this->montantExecute = $montantExecute;
+		$this->montantAttribue = $montantAttribue;
+		$this->montantRestant = $montantDemande - $montantAttribue;
+		//$this->unnamed_Themes_ = new Themes($libelle);
 	}
 
 	//methodes
@@ -53,35 +53,35 @@ class BudgetProjet {
 
 	//getters et setters
 	public function setMontantDemande($montant){
-		$this->$montantDemande = $montant;
+		$this->montantDemande = $montant;
 	}
 
 	public function getMontantDemande(){
-		return $this->$montantDemande;
+		return $this->montantDemande;
 	}
 
 	public function setMontantAttribue($montant){
-		$this->$montantAttribue = $montant;
+		$this->montantAttribue = $montant;
 	}
 
 	public function getMontantAttribue(){
-		return $this->$montantAttribue;
+		return $this->montantAttribue;
 	}
 
 	public function setMontantExecute($montant){
-		$this->$montantExecute = $montant;
+		$this->montantExecute = $montant;
 	}
 
 	public function getMontantExecute(){
-		return $this->$montantExecute;
+		return $this->montantExecute;
 	}
 
 	public function setMontantRestant($montant){
-		$this->$montantRestant = $montant;
+		$this->montantRestant = $montant;
 	}
 
 	public function getMontantRestant(){
-		return $this->$montantRestant;
+		return $this->montantRestant;
 	}
 
 }
